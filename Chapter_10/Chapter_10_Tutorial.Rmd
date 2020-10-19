@@ -1,0 +1,74 @@
+---
+title: 'EEB603 -- Chapter 10: Visualizing Results with Figures'
+author: "Paige Ellestad, Molly Levy, Haley Netherton-Morrison"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+  pdf_document:
+    toc: yes
+urlcolor: blue
+link-citations: yes
+fontsize: 12pt
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages, echo=FALSE, warning=FALSE, include=FALSE}
+#everyone can add in the packages that they will need. 
+library(ape)
+
+#Generate BibTex citation file for all R packages used to produce report
+knitr::write_bib(.packages(), file = 'packages.bib')
+```
+
+# Introduction
+
+## Aim, learning outcomes, associated files, depedencies, etc. 
+
+## Data structure
+
+## Review of inserting Figures (Ch1 bookdown tutorial)
+
+```{r ReproWorkflow, echo=FALSE, fig.align="center", fig.cap="random photo", out.width = '100%'}
+knitr::include_graphics("random_photo.jpg")
+```
+
+#(Haley) Exercise 1: Plotting with ggplot2
+#(Molly) Exercise 2: Networks
+#(Paige) Exercise 3: Introduction to phylogenies
+
+# Resources
+
+- Chapter 10 of Gandrund(2015)
+- Chapter 1 of Wickham and Grolemund (2017)
+- Chapter 22 of Guangchuang et al. (2017)
+
+# References
+
+<div id="refs"></div>
+
+# (APPENDIX) Appendix {-}
+
+# Appendix 1
+
+Citations of all R packages used to generate this report. 
+
+```{r generateBibliography, results="asis", echo=TRUE, warning = FALSE, message=FALSE}
+library("knitcitations")
+cleanbib()
+options("citation_format" = "pandoc")
+read.bibtex(file = "packages.bib")
+``` 
+
+# Appendix 2
+
+Version information about R, the operating system (OS) and attached or R loaded packages. This appendix was generated using `sessionInfo()`.
+
+```{r eval=T, echo=F, warning = FALSE, message=FALSE}
+sessionInfo()
+```
+
