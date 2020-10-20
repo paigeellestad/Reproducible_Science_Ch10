@@ -38,7 +38,17 @@ knitr::include_graphics("random_photo.jpg")
 ```
 
 #(Haley) Exercise 1: Plotting with ggplot2
-ggplot2
+ggplot2 Outline
+- Introduction to ggplot2
+  - Scatterplot tutorial (http://r-statistics.co/Complete-Ggplot2-Tutorial-Part1-With-R-Code.html or example from my DS stats class with a regression line)
+- Customization
+  - Titles and Legend Styling
+  - Box plots and histograms example
+  - Additional Options
+    - Arranging multiple plots
+    - Colors
+- Exercise: Making something like this to practice several types of plots (code borrowed from my DS stats class)
+
 
 #(Molly) Exercise 2: Networks
 #(Paige) Exercise 3: Introduction to phylogenies
