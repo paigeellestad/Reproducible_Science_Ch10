@@ -45,6 +45,13 @@ knitr::include_graphics("random_photo.jpg")
 #load data
 GoodDogs <- read_csv("Chapter_10/Data/GoodDogs.csv")
 View(GoodDogs)
+
+#create scatterplot
+ggplot(GoodDogs, aes(x=Age, y=Rating)) + geom_point()
+
+#create bar chart of average rating by dog breed
+
+
 ```
 
 
