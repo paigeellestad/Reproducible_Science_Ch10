@@ -39,8 +39,13 @@ knitr::write_bib(.packages(), file = 'packages.bib')
 knitr::include_graphics("random_photo.jpg")
 ```
 
-#(Haley) Exercise 1: Plotting with ggplot2
+#(Haley) Making Figures with Default Graphics and ggplot2
 
+## Chunk Options for Figures
+
+## Refresher: Plots with R's Default Graphics
+
+## Using ggplot2
 ```{r}
 #load data
 GoodDogs <- read_csv("Chapter_10/Data/GoodDogs.csv")
@@ -51,19 +56,21 @@ ggplot(GoodDogs, aes(x=Age, y=Rating)) + geom_point()
 
 #create bar chart of average rating by dog breed
 
-
 ```
 
-
-
-
+### Customization with ggplot2
 - Customization
   - Titles and Legend Styling
   - Box plots and histograms example
   - Additional Options
     - Arranging multiple plots
     - Colors
-- Exercise: Making something like this to practice several types of plots (code borrowed from my DS stats class)
+    
+## Exercise 1: Producing a figure like this
+
+## Execise 2: Producing and arranging two figures like this
+
+
 
 
 #(Molly) Exercise 2: Networks
