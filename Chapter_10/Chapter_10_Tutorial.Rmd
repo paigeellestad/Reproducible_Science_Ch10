@@ -20,6 +20,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r packages, echo=FALSE, warning=FALSE, include=FALSE}
 #everyone can add in the packages that they will need. 
 library(ape)
+library(ggplot2)
+library(readr)
 
 #Generate BibTex citation file for all R packages used to produce report
 knitr::write_bib(.packages(), file = 'packages.bib')
@@ -38,9 +40,16 @@ knitr::include_graphics("random_photo.jpg")
 ```
 
 #(Haley) Exercise 1: Plotting with ggplot2
-ggplot2 Outline
-- Introduction to ggplot2
-  - Scatterplot tutorial (http://r-statistics.co/Complete-Ggplot2-Tutorial-Part1-With-R-Code.html or example from my DS stats class with a regression line)
+
+```{r}
+#load data
+GoodDogs <- read_csv("Chapter_10/Data/GoodDogs.csv")
+View(GoodDogs)
+```
+
+
+
+
 - Customization
   - Titles and Legend Styling
   - Box plots and histograms example
