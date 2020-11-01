@@ -89,7 +89,6 @@ In network analyses, "nodes" designate the vertices of a network whereas "edges"
 
 To continue  our understanding of ggplot2, we will be using the ggnet2 function, which offers a larger range of network visualization in a single function call. ggnet2 plots network objects as ggplot2 objects that can be styled using ggplot2 scales and themes. While the ggnet2 function uses a syntax that may be familiar to those who have worked with ggplot2, it is also designed to be easily understood by users who may not be familiar with ggplot2 obkects. Thus, while ggnet2 applies the "grammar of graphics" to  network objects, the funciton itself works very much like the plotting functions of the igraph and/or network packages in that a long series of arguments is used to control p[retty much every aspect of the network visualization. ggnet2 is available through the GGally package.
 
-
 ```{r packages, echo=FALSE, warning=FALSE, include=FALSE}
 #install packages and dependencies
 install.packages("GGally")
@@ -133,7 +132,8 @@ Note that the vertex-related arguments of ggnet2 start with node, and the edge-r
 ggnet2(net, size = 6, color = "black", edge.size = 1, edge.color = "grey")
 ```
 
-Using these basic methods, we can set the color, size, shape, and even transparency of the nodes. Let's practice! Using the code chunks above as an example, modify your network so that it contains
+Using these basic methods, we can set the color, size, shape, and even transparency of the nodes. Let's practice! Using the code chunks above as an example, modify your network so that it contains:
+
 - grey nodes
 - red edges
 - try different versions with small vs. big nodes and thin vs. thick edges
@@ -317,15 +317,9 @@ There are LOT more things you can do with networks than there is time to go over
 - coloring edges based on the attributes of connected nodes
 - removing nodes based on missing values
 
-Furthermore, ggnet2 is just ONE package we can use to visualize networks. 
-
-
-
-
-
-
-
-
+Furthermore, ggnet2 is just ONE package we can use to visualize networks. Other common packages to visualize networks include *igraph* and *networkD3*. 
+- igraph is useful for building a network diagram from adjacency matrix, edge list, literal list of connections, and more. 
+- networkD3 allows users to build **interactive** network diagrams with R, including zoom, hover nodes, reorganize the layout. This package will provide features for dynamic data manipulation and visualization and allows users to become active participants in data visualization process by allowing users to explore data points, hierarchies among the data, filter data by groups, and more
 
 
 
