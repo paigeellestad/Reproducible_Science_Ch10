@@ -30,6 +30,8 @@ knitr::write_bib(.packages(), file = 'packages.bib')
 ```
 
 # Introduction
+- **Session 1:** Introduction, Figure Making in Base R, Using ggplot
+- **Session 2:** Advanced Figure Making: Making Networks and Phylogenetic Trees
 
 ## Aim, learning outcomes, associated files, depedencies, etc. 
 
@@ -44,9 +46,14 @@ knitr::include_graphics("random_photo.jpg")
 #(Haley) Making Figures with Default Graphics and ggplot2
 
 ## Chunk Options for Figures
+Gandrud outlines several useful chunk options for figures in R Markdown documents:
+- **fig.path:** This tells knitr where to save your figures by specifying a file path.
+- **out.height and out.width:** These set your figure's output height and width. R Markdown uses pixels (ex. To set height to 200 pixels, use out.height='200px'). If you are using LaTeX, you can also specify the height or width using cm, in, or as a proportion of a page element (ex. To set width to 80% of the text width, use outwidth='0.8\\textwidth').
+- **fig.align:** This sets the alignment of your figure to left, center, or right.
+- **fig.cap and fig.lb:** These set your figure's LaTeX caption and label. 
 
 ## Refresher: Plots with R's Default Graphics
-Because we already have some experience with Base R's plotting functions, this section serves as a little refresh on how to do some basic plotting before we get into "fancy" plotting with ggplot2. Every time you create a new RMarkdown document, you probably have noticed the inclusion of the pressure plot code chunk. That is exactly how to plot in Base R!
+Because we already have some experience with Base R's plotting functions, this section serves as a little refresh on how to do some basic plotting before we get into "fancy" plotting with ggplot2. Every time you create a new R Markdown document, you probably have noticed the inclusion of the pressure plot code chunk. That is exactly how to plot in Base R!
 ```{r Pressure plot example}
 #taking a look at what the pressure data is
 summary(pressure)
@@ -55,17 +62,15 @@ summary(pressure)
 plot(pressure)
 ```
 
-
-
 Let's try this again with some very unscientific fake data on different dogs' fetch abilities and "goodness" ratings. For now, we will focus on their fetch abilities. Let's start by loading the data file and checking it out.
-```{r GoodDog data}
+```{r GoodDogs data}
 #load and view data
 GoodDogs <- read_csv("GoodDogs.csv")
 View(GoodDogs)
 ```
 
 Now that we can see we have data on both fetch time and fetch distance, let's make a scatterplot, assuming that time is dependent on the distance the ball is thrown (and not on how fast a dog is or its focus on the task at hand).
-```{r GoodDog fetch plot}
+```{r GoodDogs fetch plot}
 plot(GoodDogs$Fetch_Distance, GoodDogs$Fetch_Time)
 ```
 
@@ -78,7 +83,7 @@ plot(GoodDogs$Fetch_Distance, GoodDogs$Fetch_Time,
 ```
 
 ## Using ggplot2
-
+Most of the time
 ```{r}
 
 
