@@ -68,7 +68,7 @@ ggplot(GoodDogs, aes(x=Age, y=Rating)) + geom_point()
     
 ## Exercise 1: Producing a figure like this
 
-## Execise 2: Producing and arranging two figures like this
+## Exercise 2: Producing and arranging two figures like this
 
 
 
@@ -83,14 +83,12 @@ In network analyses, "nodes" designate the vertices of a network whereas "edges"
 
 ## Visualizing a network diagram in R
 
-To continue to advance our understanding of ggplot2, we will be using the ggnet2 function, which is a visualization function used to ploet   network objects as ggplot2 objects. For users who are amiliar with the ggplot 2 package, the ggnet2 function uses a synta that comes close to the "grammar of graphics" to process and plot network data, in teh same format as was used for network analysis. ggnet2 is available through the GGally package
+To continue  our understanding of ggplot2, we will be using the ggnet2 function, which is a visualization function used to ploet   network objects as ggplot2 objects. For users who are amiliar with the ggplot 2 package, the ggnet2 function uses a synta that comes close to the "grammar of graphics" to process and plot network data, in teh same format as was used for network analysis. ggnet2 is available through the GGally package
 
-```{r}
-#install packages
+```{r packages, echo=FALSE, warning=FALSE, include=FALSE}
+#install packages and dependencies
 install.packages("GGally")
 library(GGally)
-
-#install dependencies
 library(network)
 library(sna)
 library(ggplot2)
@@ -157,6 +155,66 @@ net %v% "phono" = ifelse(letters[1:10] %in% c("a", "e", "i"), "vowel", "consonan
 # map node color based on vertex attribute
 ggnet2(net, color = "phono")
 ```
+
+By default, ggnet2 assigns a grayscale color to each group, but we can modify this behavior! There are different options to modify the color assignment. Let's try out a few options! One method consists of "hard-coding" the colors into the graph bya ssigning them to a verte attribute, and then passing this attribute to ggnet2:
+
+```{r}
+# hard-coding the color assignments
+net %v% "color" = ifelse(net %v% "phono" == "vowel", "steelblue", "tomato")
+ggnet2(net, color = "color")
+```
+
+We could also create a named vector consisting of a color legend through the palette argument, or generate a color vector "on the fly" directly in the function call (a more condensed version of the first option):
+
+```{r}
+#color legend as a named vector using the palette argument
+ggnet2(net, color = "phono", palette = c("vowel" = "steelblue", "consonant" = "tomato"))
+
+# generate color vector on the fly
+ggnet2(net, color = ifelse(net %v% "phono" == "vowel", "steelblue", "tomato"))
+```
+
+Lastly, we can also use pre-defined color palettes using the RColorBrewer package. Palette ferers to the name of any ColorBrewer palette, so ggnet2 will use this argument to color the nodes. If it returns an error message, there may not be enough colors in the package to encompass all node types.
+
+```{r}
+# using pre-defined color palettes
+ggnet2(net, color = "phono", palette = "Set2")
+```
+
+## Node sizes
+
+Now let's start to think about the size of our nods! In network analyses, it is common to size the nodes by their centrality or some other element of interst. Just like the color argument, the size argument of ggnet2 can take a single numeric value, a vector of values, or a  vertex attribute:
+
+```{r}
+# changing node size with a vertex attribute
+ggnet2(net, size = "phono")
+```
+
+Just like how we could use palettes to change the color of the nodes, we can also use the argument size.palette to create nodes of different sizes that are more easy to distinguish visually:
+
+```{r}
+# using size.palette
+ggnet2(net, size = "phono", size.palette = c("vowel" = 10, "consonant" = 1))
+```
+
+We can also modify the nodes so that their size corresponds to their centrality, or number of connections, within the network. We can define two separate measures of degree centrality: indegree, whichis the count of the numebr of ties directed to the node, and outdegree, which is  the number of ties the node directs to others. 
+
+When ties are associated to some positive aspects such as friendship or collaboration, indegree is often interpreted as a form of popularity, and outdegree as gregariousness. ggnet2 also recognizes total (or Freeman) degree, which can also be thought of as "betweenness" or a node acting as a bridge along the shortest path betwen two other nodes. 
+
+The network we have been working with is unidirectional, so measures of indegree and outdegree are not particularly informative. However, we can still use Freeman degrees to alter the size of the nodes based on their number of connections. In addition to "indegree", "outdegree", and "freeman", ggnet also understands the argument "degree" which is equivalent to freeman. 
+
+```{r}
+ggnet2(net, size = "degree")
+```
+
+
+
+
+
+
+
+
+
 
 
 
