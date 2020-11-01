@@ -20,8 +20,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r packages, echo=FALSE, warning=FALSE, include=FALSE}
 #everyone can add in the packages that they will need. 
 library(ape)
-library(ggplot2)
-library(readr)
+library(datasets) #to access base datasets - there's a lot to choose from in here!
+library(ggplot2) #to do some fancier plotting
+library(readr) #to load other data files (e.g., .csv)
+
 
 #Generate BibTex citation file for all R packages used to produce report
 knitr::write_bib(.packages(), file = 'packages.bib')
@@ -44,17 +46,41 @@ knitr::include_graphics("random_photo.jpg")
 ## Chunk Options for Figures
 
 ## Refresher: Plots with R's Default Graphics
+Because we already have some experience with Base R's plotting functions, this section serves as a little refresh on how to do some basic plotting before we get into "fancy" plotting with ggplot2. Every time you create a new RMarkdown document, you probably have noticed the inclusion of the pressure plot code chunk. That is exactly how to plot in Base R!
+```{r Pressure plot example}
+#taking a look at what the pressure data is
+summary(pressure)
+
+#plotting the pressure data
+plot(pressure)
+```
+
+
+
+Let's try this again with some very unscientific fake data on different dogs' fetch abilities and "goodness" ratings. For now, we will focus on their fetch abilities. Let's start by loading the data file and checking it out.
+```{r GoodDog data}
+#load and view data
+GoodDogs <- read_csv("GoodDogs.csv")
+View(GoodDogs)
+```
+
+Now that we can see we have data on both fetch time and fetch distance, let's make a scatterplot, assuming that time is dependent on the distance the ball is thrown (and not on how fast a dog is or its focus on the task at hand).
+```{r GoodDog fetch plot}
+plot(GoodDogs$Fetch_Distance, GoodDogs$Fetch_Time)
+```
+
+Now that we have the basic scatterplot down, let's clean up our axis labels and add a title. We can do this by specifying the xlab, ylab, and main arguments in the plot() function.
+```{r GoodDogs fetch plot 2}
+plot(GoodDogs$Fetch_Distance, GoodDogs$Fetch_Time,
+     xlab = "Distance Ball is Thrown (ft)",
+     ylab = "Fetch Time (s)",
+     main = "Throw Distance vs Time while Playing Fetch")
+```
 
 ## Using ggplot2
+
 ```{r}
-#load data
-GoodDogs <- read_csv("Chapter_10/Data/GoodDogs.csv")
-View(GoodDogs)
 
-#create scatterplot
-ggplot(GoodDogs, aes(x=Age, y=Rating)) + geom_point()
-
-#create bar chart of average rating by dog breed
 
 ```
 
