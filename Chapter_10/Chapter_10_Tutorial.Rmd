@@ -115,24 +115,27 @@ The net argument is the only compulsory argument of ggnet2. It can be a network 
 
 ## Let's start to modify our network!
 
-The most basic properties of our network that we might want to change are the size/color of the nodes and/or the size/color of the edges. Let's practice modifyin each of these properties...
+The most basic properties of our network that we might want to change are the size/color of the nodes and/or the size/color of the edges. Let's practice modifying each of these properties...
 
 ```{r}
 # editing node and edge properties
 ggnet2 (net, node.size = 6, node.color = "black", edge.size = 1, edge.color = "grey")
 ```
 
-Note that the verte-related arguments of ggnet2 start with node, and the edge-related arguments start with edge. We can also abbreviate the node.color and node.size arguments to save time!
+Note that the vertex-related arguments of ggnet2 start with node, and the edge-related arguments start with edge. We can also abbreviate the node.color and node.size arguments to save time!
 
 ```{r}
 ggnet2(net, size = 6, color = "black", edge.size = 1, edge.color = "grey")
 ```
 
-Using these basic methods, we can set the color, size, shape, and even transparency of the nodes. Let's next consider how we might modify the POSITION of the nodes
+Using these basic methods, we can set the color, size, shape, and even transparency of the nodes. Let's practice! Using the code chunks above as an example, modify your network so that it contains
+- grey nodes
+- red edges
+- try different versions with small vs. big nodes and thin vs. thick edges
 
 ## Node placement
 
-BY default, ggnet2 places nodes using something called the Fruchter-Reingold force-directed algorithm. However, there are other algorithms we might want to use instead. There is no single, "good" layout algorithm, and different approaches may be valuable under different circumstances.For more information, you can see the documentation of the gplot.layout function for the lsit of placement algorithms. Let's test out a few different common algorithms. How do these networks differ from one another?
+In addition to the attributes modified above, we can also modify the POSITION of our nodes. By default, ggnet2 places nodes using something called the Fruchter-Reingold force-directed algorithm. However, there are other algorithms we might want to use instead. There is no single, "good" layout algorithm, and different approaches may be valuable under different circumstances.For more information, you can see the documentation of the gplot.layout function for the lsit of placement algorithms. Let's test out a few different common algorithms. How do these networks differ from one another?
 
 ```{r}
 # algorithms of node placement
@@ -140,9 +143,14 @@ ggnet2(net)
 ggnet2(net, mode = "circle")
 ggnet2(net, mode = "kamadakawai")
 ggnet2(net, mode = "random")
+
 ```
 
 As noted, the default is Fruchterman-Reingold. This function generates a layout using a variant of Frucherterman and Reingold's force-directed placement algorithm. The circle algorithm places vertices uniformly in a circle and can't be modified by any additional arguments. The kamadakawai funciton generates a verte layout using a version of the Kamada-Kawi force-directed placement algorithm. As one might epect, the  random funciton places vertices randomly - you can re-run this line of code repeatedly and see all the different node arrangements that are randomly generated! 
+
+### Let's practice!
+
+Open up the help documentation for the gplot.layout function and look at the list of possible layouts. Choose one we haven't looked at yet and edit your network code to reflect a different mode. How did your function alter the arrangement of the network from the default settings?
 
 ## Advanced node colors
 
@@ -207,7 +215,92 @@ The network we have been working with is unidirectional, so measures of indegree
 ggnet2(net, size = "degree")
 ```
 
+## Changing node shapes and transparency
 
+You may have already realized that circles are the default node shapes for ggnet2, but they are not the only option! We can also modify the shape and transpacery of the nodes in the same manner that we modified the color and size of the nods, either through a single value, a vector of values, or a vertex attribute! 
+
+```{r}
+# changing shape using a single value
+ggnet2(net, color = "phono", shape = 15)
+
+# changing shape using a vertex attribute
+ggnet2(net, color = "phono", shape = "phono")
+```
+
+Note: the second example above will return a warning about a duplicated plotting parameter. This is an innocuous warning that is produced by mapping two characteristics of the nodes to the same vertex attribute. It cannot be avoided without modifying ggplot2.
+
+Again, just like the color and size, we can use the alpha and shape arguments to take manual "palettes" of values through the alpha.palette and shape.palette arguments.
+
+```{r}
+# using palettes to change transparency of nodes
+ggnet2(net, alpha = "phono", alpha.palette = c("vowel" = 0.2, "consonant" = 1))
+
+# using palettes to change the shape of the nodes
+ggnet2(net, shape = "phono", shape.palette = c("vowel" = 19, "consonant" = 15))
+```
+
+When it comes to making these customizations, it is important to consider what you are trying to communicate with your network. ggnet2 is pretty fleible with changing node shapes and transparency, which can make it easy to go overboard. Try and make the minimal amount of modifications that communicate what is important in your network - node shapes become difficult to distinguish if you use more than six different shapes in the plots, and transparencies may not be as easily distinguishable by the reader. 
+
+```{r}
+# example of overly modified node shapes
+ggnet2(net, shape = sample(1:10))
+
+#example of nodes of different transparencies 
+ggnet2(net, alpha = "phono")
+```
+
+## Labeling our nodes
+
+Through the label argument, we can also use ggnet2 to label the nodes of a network using verte names, another vertex attribute, or any other vector of labels:
+
+```{r}
+# labeling using vertex names
+ggnet2(net, label = TRUE)
+
+# labeling using vertex attribute
+ggnet2(net, label = "phono")
+
+#labeling using vector of labels
+ggnet2(net, label = 1:10)
+```
+
+We can also choose WHICH nodes we want to label. Recall that this network is based on a string of letters, so we can choose to label nodes based on if they are a consonant or a vowel:
+
+```{r}
+# labeling only vowels using a vector of values
+ggnet2(net, label = c("a", "e", "i"), color = "phono", label.color = "black")
+```
+
+ggnet2 automatically sets the size of the labels to be half that of the node size, but we can also control the size of the label using the label.size argument, their color using the label.color argument, and their level of transparency using the label.alpha argumment:
+
+```{r}
+# changing label size
+ggnet2(net, size = 12, label = TRUE, label.size = 5)
+
+#changing label color
+ggnet2(net, size = 12, label = TRUE, color = "black", label.color = "white")
+
+# changing label transparency
+ggnet2(net, label = TRUE, label.alpha = 0.75)
+```
+
+### Let's try practicing on our own!
+
+Using the code above as an example, modify your network so that the labels are 1/4 as big as the node size, the nodes are tomato-colored with steel blue labels, and 50% transparency!
+
+```{r}
+# solution
+
+```
+
+## Let's practice!
+
+
+
+
+## More fun with networks!
+
+There are LOT more things you can do with networks than there is time to go over in this tutorial
 
 
 
