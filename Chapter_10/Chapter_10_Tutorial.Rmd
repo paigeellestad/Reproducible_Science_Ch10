@@ -132,7 +132,7 @@ library(RColorBrewer)
 
 ## Let's create a basic network!
 
-For the purpose of this tutorial, we are going to create an undirected basic network, with 10 nodes named "a, b, ..., i, j" and a high likelihood of an edge to eist between them:
+For the purpose of this tutorial, we are going to create an undirected basic network, with 10 nodes named "a, b, ..., i, j" and a high likelihood of an edge to exist between them:
 
 ```{r network, echo = TRUE, eval = TRUE}
 # random graph
