@@ -220,25 +220,25 @@ ggarrange(DogAgeBreed,                  # First row with breed/age histogram
           nrow = 3)                                   
 ```
 
-
 ## Exercise 1A: Customizing the DogAgeBreed and DogRating ggplots
-Because there is likely a range of ggplot experience in this group, think of these exercises like a choose your own adventure. If you want to play around with 'ggplot2' and do your own thing with the plots, feel free to do so! Otherwise, you can work to produce ggplots that look like this:
+Because there is likely a range of ggplot experience in this group, think of these exercises like a choose your own adventure. If you want to play around with 'ggplot2' and do your own thing with the plots, feel free to do so! Otherwise, you can work to produce something like this:
 ```{r Exercise1A Figures, echo=FALSE, fig.align="center", fig.cap="Exercise 1A Sample Figures", out.width = '100%'}
-knitr::include_graphics("solution1A.jpg")
+knitr::include_graphics("solution1A.png")
 ```
 
-```{r Solution1A}
+```{r Solution1A, echo=FALSE, eval=FALSE}
 DogAgeBreed1A <- ggplot(GoodDogs, aes(x = Age, fill = Breed)) +
   geom_histogram(position = 'identity', alpha = 0.8, binwidth = 1) +
   facet_grid( . ~ Breed ) +
   labs(x = 'Dog Age (years)', y = 'Count of Dogs') +
-  theme(plot.title = element_text(hjust = 0.5, face = "bold")) +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"), panel.background = element_blank(), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
   ggtitle('Dog Breed Age Comparisons') 
 
 DogRating1A <- ggplot(GoodDogs, aes(x = Breed, y = Rating, fill = Breed)) +
   geom_boxplot(notch = FALSE) +
   labs(x = 'Dog Breed', y = 'Goodness Rating') +
-  theme(plot.title = element_text(hjust = 0.5, face = "bold"), legend.title = element_blank(), legend.position = "none") +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"), legend.title = element_blank(), legend.position = "none", panel.background = element_blank(), panel.border = element_blank(), panel.grid.major = element_blank(),
+panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
   ggtitle('Dog Breed Goodness Ratings')
 
 ggarrange(DogAgeBreed1A, 
@@ -246,10 +246,66 @@ ggarrange(DogAgeBreed1A,
           nrow = 2, common.legend = TRUE, legend = "bottom") 
 ```
 
-## Exercise 1B: 
+## Exercise 1B: Revisiting the Iris Data from Chapter 8!
+We will use the iris dataset that we first saw in the Chapter 8 tutorial to work on some more complex arrangement and figure customization. We will use the steps below to produce this:
+```{r Exercise1B Figures, echo=FALSE, fig.align="center", fig.cap="Exercise 1B Sample Figures", out.width = '100%'}
+knitr::include_graphics("solution1B.png")
+```
+Our end result is by no means complete, but will give you some practice for making different plot types and getting used to using these different packages. Feel free to edit axis labels, titles, and more!
 
+**Steps:**
+1. Create the following plots using the iris dataset and 'ggplot2' (challenge: use the 'ggpubr' package to create the plots - see link below):
+    + A box plot of the Sepal.Width data
+    + A faceted scatter plot with trend lines of y = “Petal.Length” by x = “Petal.Width"
+    + A jittered violin plot of Petal.Length by species
+2. Create an "all.sepals" ggplot object where x = "Sepal.Length", y = "Sepal.Width"
+3. Use the "all.sepals" object to create a scatter and 2D density plot.
+4. Use the minimal theme for all plots
+5. Arrange the plots from steps 1-3 in 3 rows and with a shared legend for iris species.
 
+```{r Solution1B, echo=FALSE, eval=FALSE}
+#refresh on the variables in the iris dataset
+summary(iris)
 
+#box plot for sepal.width
+SepalBox <- ggplot(iris) + 
+  geom_boxplot(aes(x = Species, y = Sepal.Width, color = Species)) +
+  theme_minimal()
+
+#scatter plots with trend lines and faceting
+PetalScatter <- ggplot(data=iris,aes(x=Petal.Width, y=Petal.Length,color=Species)) +
+  geom_point() +
+  geom_smooth(se=FALSE) +
+  facet_wrap(~Species,scale='free_y') +
+  theme_minimal()
+
+#layered violin plot (violin + jitter)
+p <- ggplot(iris, mapping = aes(x = Species, y = Petal.Length, color = Species))
+violin.layer <- geom_violin() 
+jitter.layer <- geom_jitter(width=0.15, height=0.05, alpha=0.5, size=0.75) 
+
+PetalViolin <- p + violin.layer + jitter.layer + theme_minimal() #combine layers of plot
+
+#create an all.sepals object
+all.sepals <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width))
+
+#use the all.sepals object to create a scatter plot and density plot
+SepalScatter <- all.sepals + 
+  geom_point(aes(color = Species, shape = Species), size = 2, alpha = 0.6) +
+  theme_minimal()
+
+SepalDensity <- all.sepals + 
+  geom_density_2d(aes(color = Species), alpha = 0.5) + 
+  geom_point(aes(color = Species), alpha=0.5, size=1) + 
+  facet_wrap(~ Species) +
+  theme_minimal()
+
+#arrange plots with a common legend
+ggarrange(PetalScatter, PetalViolin, SepalScatter, SepalBox, SepalDensity, ncol=2, nrow=3, widths = c(1, .75), common.legend = TRUE, legend="bottom")
+```
+
+## Challenge/Next Steps
+To explore 'ggpubr', 'gridExtra', 'ggplot2', and other packages more, check out this great tutorial from STHDA [link](http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/#use-common-legend-for-combined-ggplots). This tutorial goes into even more ways to arrange and visualize plots to get your figures publication-ready!
 
 # Exercise 2: Networks
 
@@ -498,6 +554,10 @@ Furthermore, ggnet2 is just ONE package we can use to visualize networks. Other 
 - Chapter 10 of Gandrund(2015)
 - Chapter 1 of Wickham and Grolemund (2017)
 - Chapter 22 of Guangchuang et al. (2017)
+- ggplot2 and Beyond Tutorials
+  - https://bio304-class.github.io/bio304-book/introduction-to-ggplot2.html
+  - http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/#mix-table-text-and-ggplot
+  
 
 # References
 
