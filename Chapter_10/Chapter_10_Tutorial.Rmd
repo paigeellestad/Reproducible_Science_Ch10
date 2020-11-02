@@ -21,8 +21,10 @@ knitr::opts_chunk$set(echo = TRUE)
 #everyone can add in the packages that they will need. 
 library(ape)
 library(datasets) #to access base datasets - there's a lot to choose from in here!
-library(ggplot2) #to do some fancier plotting
 library(readr) #to load other data files (e.g., .csv)
+library(ggplot2) #to do some fancier plotting
+library(ggplotgui) #to access a shiny app for ggplots
+
 
 
 #Generate BibTex citation file for all R packages used to produce report
@@ -83,7 +85,17 @@ plot(GoodDogs$Fetch_Distance, GoodDogs$Fetch_Time,
 ```
 
 ## Using ggplot2
-'ggplot2' allows for additional flexibility and customization of our figures. 
+### What is ggplot2?
+'ggplot2' allows for additional flexibility and customization of our figures. Using the "grammar of graphics", 
+'ggplot2' is able to build every graph from the same base components:
+- a data set (e.g., your data)
+- a set of geoms (e.g., the points representing your data + how you want them to look)
+- a coordinate system (e.g., defining where the data points are)
+
+The grammar for this package can feel a little unwieldy at first, so keeping this cheatsheet [link] (https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf) handy might be helpful!
+
+### Example 1: Revisting Our GoodDogs Data
+
 ```{r}
 
 
