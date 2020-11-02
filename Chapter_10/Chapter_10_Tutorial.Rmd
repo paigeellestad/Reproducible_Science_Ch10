@@ -89,7 +89,9 @@ In network analyses, "nodes" designate the vertices of a network whereas "edges"
 
 To continue  our understanding of ggplot2, we will be using the ggnet2 function, which offers a larger range of network visualization in a single function call. ggnet2 plots network objects as ggplot2 objects that can be styled using ggplot2 scales and themes. While the ggnet2 function uses a syntax that may be familiar to those who have worked with ggplot2, it is also designed to be easily understood by users who may not be familiar with ggplot2 obkects. Thus, while ggnet2 applies the "grammar of graphics" to  network objects, the funciton itself works very much like the plotting functions of the igraph and/or network packages in that a long series of arguments is used to control p[retty much every aspect of the network visualization. ggnet2 is available through the GGally package.
 
-```{r packages, echo=FALSE, warning=FALSE, include=FALSE}
+You may already have these packages loaded from Session 1, but as a reminder these are the packages we will need for this section of the tutorial: 
+
+```{r packages2, echo=FALSE, warning=FALSE, include=FALSE}
 #install packages and dependencies
 install.packages("GGally")
 library(GGally)
