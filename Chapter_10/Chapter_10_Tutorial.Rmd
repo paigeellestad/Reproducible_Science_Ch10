@@ -52,6 +52,16 @@ knitr::include_graphics("random_photo.jpg")
 ```
 
 # Making Figures with Default Graphics and ggplot2
+This section will address different ways to make figures in R. Specifically, we will cover:
+
+* Chunk options for figures
+* Plotting with R's default graphics
+* Introduction to 'ggplot2'
+    + Familiarizing ourselves with ggplot's grammar (Example 1)
+    + Exploring a few methods for arranging ggplots (Example 2)
+* Exercises to create and arrange different types of figures using 'ggplot2' and associated packages
+
+This is not an exhaustive tutorial for all of the features of 'ggplot2' or R's default graphics, but instead serves as a base to get you started with visualizing your data in more meaningful ways using R!
 
 ## Chunk Options for Figures
 Gandrud outlines several useful chunk options for figures in R Markdown documents: 
