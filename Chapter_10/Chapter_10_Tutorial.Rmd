@@ -95,10 +95,33 @@ plot(GoodDogs$Fetch_Distance, GoodDogs$Fetch_Time,
 The grammar for this package can feel a little unwieldy at first, so keeping this cheatsheet [link] (https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf) handy might be helpful!
 
 ### Example 1: Revisting Our GoodDogs Data
+Let's start to get to know ggplot better by revisiting our fetch data. First, we need to specify our data using ggplot(). Next, we specify that we want a scatterplot using geom_point().
+```{r GoodDogs fetch ggplot}
+#make a basic scatterplot
+ggplot(GoodDogs, aes(x=GoodDogs$Fetch_Distance, y=GoodDogs$Fetch_Time)) +
+  geom_point() 
+```
 
-```{r}
+Now let's make our figure look a little bit nicer by cleaning up our axis labels. 
+```{r GoodDogs fetch ggplot2}
+#add axis labels and a title
+ggplot(GoodDogs, aes(x=GoodDogs$Fetch_Distance, y=GoodDogs$Fetch_Time)) +
+  geom_point() +
+  xlab("Distance Ball is Thrown (ft)") + #rename the x axis label
+  ylab("Fetch Time (s)") + #rename the y axis label
+  ggtitle("Throw Distance vs Time while Playing Fetch") + #add a plot title
+  theme(plot.title = element_text(hjust = 0.5)) + #this centers our title
+```
 
-
+We also might want to know some more about our data, like which points are associated with the different dog breeds in our dataset. This will use our same code from above, but a color argument to the aes argument of ggplot.
+```{r GoodDogs fetch and breed ggplot}
+#add color based on dog breed
+ggplot(GoodDogs, aes(x=GoodDogs$Fetch_Distance, y=GoodDogs$Fetch_Time, color=GoodDogs$Breed))+   
+  geom_point() +
+  xlab("Distance Ball is Thrown (ft)") + 
+  ylab("Fetch Time (s)") + 
+  ggtitle("Throw Distance vs Time while Playing Fetch") + 
+  theme(plot.title = element_text(hjust = 0.5)) 
 ```
 
 ### Customization with ggplot2
