@@ -585,7 +585,7 @@ lengths (after colons) and node names (after closed parentheses).
 library(ape)
 
 #read the aligned DNA sequences which are in FASTA format
-dna <- read.dna(file = "~/EEB_Program/Courses/Reproducible_Science/Chapter_10/phylogenies/vanilla_seqs_specs.fasta", format = "fasta")
+dna <- read.dna(file = "vanilla_seqs_specs.fasta", format = "fasta")
 
 #calculate pairwise genetic distances
 #What is the defaultevolutionary model used to calcualte distances?
@@ -607,9 +607,9 @@ plot(tree2, main = "Rooted NJ Tree", cex = .7)
 ```
 
 ### Reading Newick files and visualizing trees
-```{r newick files, include = TRUE, results = hide}
+```{r newick files, include = TRUE, results = 'hide'}
 #use the read.tree function to open newick files. Check out their structure and class. 
-tree <- read.tree("~/EEB_Program/Courses/Reproducible_Science/Chapter_10/phylogenies/Theobroma_tree.nwk")
+tree <- read.tree("Theobroma_tree.nwk")
 str(tree)
 class(tree)
 
