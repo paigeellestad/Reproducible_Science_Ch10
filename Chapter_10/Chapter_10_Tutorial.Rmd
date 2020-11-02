@@ -220,7 +220,6 @@ ggarrange(DogAgeBreed,                  # First row with breed/age histogram
           nrow = 3)                                   
 ```
 
-
 ## Exercise 1A: Customizing the DogAgeBreed and DogRating ggplots
 Because there is likely a range of ggplot experience in this group, think of these exercises like a choose your own adventure. If you want to play around with 'ggplot2' and do your own thing with the plots, feel free to do so! Otherwise, you can work to produce something like this:
 ```{r Exercise1A Figures, echo=FALSE, fig.align="center", fig.cap="Exercise 1A Sample Figures", out.width = '100%'}
@@ -247,10 +246,17 @@ ggarrange(DogAgeBreed1A,
           nrow = 2, common.legend = TRUE, legend = "bottom") 
 ```
 
-## Exercise 1B: 
+## Exercise 1B: Revisiting the Iris Data from Chapter 8!
+We will use the iris dataset that we first saw in the Chapter 8 tutorial to work on some more complex arrangement and figure customization. We will use the steps below to produce this:
+```{r Exercise1B Figures, echo=FALSE, fig.align="center", fig.cap="Exercise 1B Sample Figures", out.width = '100%'}
+knitr::include_graphics("solution1B.png")
+```
+**Steps:**
+1. 
 
 
-
+## Challenge/Next Steps
+To explore 'ggpubr', 'gridExtra', 'ggplot2', and other packages more, check out this great tutorial from STHDA [link](http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/#use-common-legend-for-combined-ggplots). This tutorial goes into even more ways to arrange and visualize plots to get your figures publication-ready!
 
 # Exercise 2: Networks
 
