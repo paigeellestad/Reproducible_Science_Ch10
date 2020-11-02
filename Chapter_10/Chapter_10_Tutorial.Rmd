@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r packages, echo=FALSE, warning=FALSE, include=FALSE}
-#everyone can add in the packages that they will need. 
+#you will need to have all of these packages installed and loaded to complete this tutorial 
 library(knitr) #knitting tools
 library(datasets) #to access base datasets - there's a lot to choose from in here!
 library(readr) #to load other data files (e.g., .csv)
