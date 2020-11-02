@@ -99,12 +99,261 @@ Most of the time
     
 ## Exercise 1: Producing a figure like this
 
-## Execise 2: Producing and arranging two figures like this
+## Exercise 2: Producing and arranging two figures like this
 
 
 
 
-#(Molly) Exercise 2: Networks
+# Exercise 2: Networks
+
+## What is a network?
+ At its core, a network is simply a set of vertices connected by a set of edges. There are many kinds of networks, and network analyses can be used across disciplines.vFor instance, networks of scientificvcollaboration, a food web of marine animals, and American college football games are all covered in a paper on community detection in networks by Girvan and Newman (2002). Additionally, Buldyrev et al. (2010) study node failure in interdependent networks like power grids. Social networks such as links between television and film actors found on http://www.imdb.com/ and neural networks, like the completely mapped neural network of the C. elegans worm are also extensively studied (Watts and
+Strogatz, 1998).
+
+## Network terminology
+
+In network analyses, "nodes" designate the vertices of a network whereas "edges" indicate the ties between nodes. The edges in networks can be *directed*, indicating an ordering of vertices (wherein switching the direction of hte edge would change the structure of the network), or the edges can be *undirected*, meaning the edges are simply connections between vertices where order does not matter. 
+-  The **World Wide Web**  is an example of directed edges: hyperlinnks connect one Web apge to another, but not necessraily the other way around!
+- **Co-authorship networks** are eamples of undirected networks, wherein nodes are authors and are connected by an edge if they have written a publication together (direction does not matter!)
+
+## Visualizing a network diagram in R using ggnet2
+
+To continue  our understanding of ggplot2, we will be using the ggnet2 function, which offers a larger range of network visualization in a single function call. ggnet2 plots network objects as ggplot2 objects that can be styled using ggplot2 scales and themes. While the ggnet2 function uses a syntax that may be familiar to those who have worked with ggplot2, it is also designed to be easily understood by users who may not be familiar with ggplot2 obkects. Thus, while ggnet2 applies the "grammar of graphics" to  network objects, the funciton itself works very much like the plotting functions of the igraph and/or network packages in that a long series of arguments is used to control p[retty much every aspect of the network visualization. ggnet2 is available through the GGally package.
+
+```{r packages, echo=FALSE, warning=FALSE, include=FALSE}
+#install packages and dependencies
+install.packages("GGally")
+library(GGally)
+library(network)
+library(sna)
+library(ggplot2)
+library(RColorBrewer)
+```
+
+## Let's create a basic network!
+
+For the purpose of this tutorial, we are going to create an undirected basic network, with 10 nodes named "a, b, ..., i, j" and a high likelihood of an edge to eist between them:
+
+```{r network, echo = TRUE, eval = TRUE}
+# random graph
+net = rgraph(10, mode = "graph", tprob = 0.5)
+net = network(net, directed = FALSE)
+
+#vertex names
+network.vertex.names(net) = letters[1:10]
+
+#visualize the network
+ggnet2(net)
+```
+
+The net argument is the only compulsory argument of ggnet2. It can be a network object or any object that can be coerced to that class through its edgeset.constructors functions, such as adjacency matrixes, incidence matrixes and edge lists.
+
+## Let's start to modify our network!
+
+The most basic properties of our network that we might want to change are the size/color of the nodes and/or the size/color of the edges. Let's practice modifying each of these properties...
+
+```{r netproperties, echo = TRUE, eval = TRUE}
+# editing node and edge properties
+ggnet2 (net, node.size = 6, node.color = "black", edge.size = 1, edge.color = "grey")
+```
+
+Note that the vertex-related arguments of ggnet2 start with node, and the edge-related arguments start with edge. We can also abbreviate the node.color and node.size arguments to save time!
+
+```{r netproperties2, echo = TRUE, eval = TRUE}
+ggnet2(net, size = 6, color = "black", edge.size = 1, edge.color = "grey")
+```
+
+Using these basic methods, we can set the color, size, shape, and even transparency of the nodes. Let's practice! Using the code chunks above as an example, modify your network so that it contains:
+
+- grey nodes
+- red edges
+- try different versions with small vs. big nodes and thin vs. thick edges
+
+## Node placement
+
+In addition to the attributes modified above, we can also modify the POSITION of our nodes. By default, ggnet2 places nodes using something called the Fruchter-Reingold force-directed algorithm. However, there are other algorithms we might want to use instead. There is no single, "good" layout algorithm, and different approaches may be valuable under different circumstances.For more information, you can see the documentation of the gplot.layout function for the lsit of placement algorithms. Let's test out a few different common algorithms. How do these networks differ from one another?
+
+```{r nodeplace, echo = TRUE, eval = TRUE}
+# algorithms of node placement
+ggnet2(net)
+ggnet2(net, mode = "circle")
+ggnet2(net, mode = "kamadakawai")
+ggnet2(net, mode = "random")
+```
+
+As noted, the default is Fruchterman-Reingold. This function generates a layout using a variant of Frucherterman and Reingold's force-directed placement algorithm. The circle algorithm places vertices uniformly in a circle and can't be modified by any additional arguments. The kamadakawai funciton generates a verte layout using a version of the Kamada-Kawi force-directed placement algorithm. As one might epect, the  random funciton places vertices randomly - you can re-run this line of code repeatedly and see all the different node arrangements that are randomly generated! 
+
+### Let's practice!
+
+Open up the help documentation for the gplot.layout function and look at the list of possible layouts. Choose one we haven't looked at yet and edit your network code to reflect a different mode. How did your function alter the arrangement of the network from the default settings?
+
+## Advanced node colors
+
+We have already considered how to do a basic modification of node colors. Let's now assign a vertex attribute "phono", which indicates whether the name of the vertex is a vowel or consonant. This attribute can be passed to ggnet2 to indicate that the nods belong to a group. We will pass the name of the verte attribute to the color argument, which will then use it to map the colors of the nodes.
+
+```{r nodecolor, echo = TRUE, eval = TRUE}
+# indicating vowel or consonant
+net %v% "phono" = ifelse(letters[1:10] %in% c("a", "e", "i"), "vowel", "consonant")
+
+# map node color based on vertex attribute
+ggnet2(net, color = "phono")
+```
+
+By default, ggnet2 assigns a grayscale color to each group, but we can modify this behavior! There are different options to modify the color assignment. Let's try out a few options! One method consists of "hard-coding" the colors into the graph by assigning them to a vertex attribute, and then passing this attribute to ggnet2:
+
+```{r colorassign, echo = TRUE, eval = TRUE}
+# hard-coding the color assignments
+net %v% "color" = ifelse(net %v% "phono" == "vowel", "steelblue", "tomato")
+ggnet2(net, color = "color")
+```
+
+We could also create a named vector consisting of a color legend through the palette argument, or generate a color vector "on the fly" directly in the function call (a more condensed version of the first option):
+
+```{r colorassign2, echo = TRUE, eval = TRUE}
+#color legend as a named vector using the palette argument
+ggnet2(net, color = "phono", palette = c("vowel" = "steelblue", "consonant" = "tomato"))
+
+# generate color vector on the fly
+ggnet2(net, color = ifelse(net %v% "phono" == "vowel", "steelblue", "tomato"))
+```
+
+Lastly, we can also use pre-defined color palettes using the RColorBrewer package. Palette ferers to the name of any ColorBrewer palette, so ggnet2 will use this argument to color the nodes. If it returns an error message, there may not be enough colors in the package to encompass all node types.
+
+```{r colorpalette, echo = TRUE, eval = TRUE}
+# using pre-defined color palettes
+ggnet2(net, color = "phono", palette = "Set2")
+```
+
+## Node sizes
+
+Now let's start to think about the size of our nodes! In network analyses, it is common to size the nodes by their centrality or some other element of interst. Just like the color argument, the size argument of ggnet2 can take a single numeric value, a vector of values, or a  vertex attribute:
+
+```{r nodesize, echo = TRUE, eval = TRUE}
+# changing node size with a vertex attribute
+ggnet2(net, size = "phono")
+```
+
+Just like how we could use palettes to change the color of the nodes, we can also use the argument size.palette to create nodes of different sizes that are more easy to distinguish visually:
+
+```{r sizepal, echo = TRUE, eval = TRUE}
+# using size.palette
+ggnet2(net, size = "phono", size.palette = c("vowel" = 10, "consonant" = 1))
+```
+
+We can also modify the nodes so that their size corresponds to their centrality, or number of connections, within the network. We can define two separate measures of degree centrality: indegree, whic his the count of the number of ties directed to the node, and outdegree, which is  the number of ties the node directs to others. 
+
+When ties are associated to some positive aspects such as friendship or collaboration, indegree is often interpreted as a form of popularity, and outdegree as gregariousness. ggnet2 also recognizes total (or Freeman) degree, which can also be thought of as "betweenness" or a node acting as a bridge along the shortest path betwen two other nodes. In addition to "indegree", "outdegree", and "freeman", ggnet also understands the argument "degree" which is equivalent to freeman. 
+
+```{r degrees, echo = TRUE, eval = TRUE}
+ggnet2(net, size = "degree")
+```
+
+### Let's practice!
+
+Change your network to reflect either "indegree" or "outdegree." Did it make a noticeable difference in your network  visualization? Why or why not?
+
+## Changing node shapes and transparency
+
+You may have already realized that circles are the default node shape for ggnet2, but they are not the only option! We can also modify the shape and transpacery of the nodes in the same manner that we modified the color and size of the nods, either through a single value, a vector of values, or a vertex attribute! 
+
+```{r shapes, echo = TRUE, eval = TRUE}
+# changing shape using a single value
+ggnet2(net, color = "phono", shape = 15)
+
+# changing shape using a vertex attribute
+ggnet2(net, color = "phono", shape = "phono")
+```
+
+Note: the second example above will return a warning about a duplicated plotting parameter. This is an innocuous warning that is produced by mapping two characteristics of the nodes to the same vertex attribute. It cannot be avoided without modifying ggplot2.
+
+Again, just like the color and size, we can use the alpha and shape arguments to take manual "palettes" of values through the alpha.palette and shape.palette arguments.
+
+```{r shapepalette, echo = TRUE, eval = TRUE}
+# using palettes to change transparency of nodes
+ggnet2(net, alpha = "phono", alpha.palette = c("vowel" = 0.2, "consonant" = 1))
+
+# using palettes to change the shape of the nodes
+ggnet2(net, shape = "phono", shape.palette = c("vowel" = 19, "consonant" = 15))
+```
+
+### Challenge!
+
+Recall that we used "palettes"  to specify which colors we wanted our consonant and vowel nodes to display as. Can we use the palette argument to do the same thing with shapes (e.g. manually specify which shape we want consonants vs. vowels to appear as)? Let's try it out!
+
+```{r solution, echo = FALSE, eval = FALSE}
+# solution 
+
+```
+
+When it comes to making these customizations, it is important to consider what you are trying to communicate with your network. ggnet2 is pretty fleible with changing node shapes and transparency, which can make it easy to go overboard. Try and make the minimal amount of modifications that communicate what is important in your network - node shapes become difficult to distinguish if you use more than six different shapes in the plots, and transparencies may not be as easily distinguishable by the reader. 
+
+```{r examples, echo = TRUE, eval = TRUE}
+# example of overly modified node shapes
+ggnet2(net, shape = sample(1:10))
+
+#example of nodes of different transparencies 
+ggnet2(net, alpha = "phono")
+```
+
+## Labeling our nodes
+
+Through the label argument, we can also use ggnet2 to label the nodes of a network using vertex names, another vertex attribute, or any other vector of labels:
+
+```{r labels, echo = TRUE, eval = TRUE}
+# labeling using vertex names
+ggnet2(net, label = TRUE)
+
+# labeling using vertex attribute
+ggnet2(net, label = "phono")
+
+#labeling using vector of labels
+ggnet2(net, label = 1:10)
+```
+
+We can also choose WHICH nodes we want to label. Recall that this network is based on a string of letters, so we can choose to label nodes based on if they are a consonant or a vowel:
+
+```{r vectorlabel, echo = TRUE, eval = TRUE}
+# labeling only vowels using a vector of values
+ggnet2(net, label = c("a", "e", "i"), color = "phono", label.color = "black")
+```
+
+ggnet2 automatically sets the size of the labels to be half that of the node size, but we can also control the size of the label using the label.size argument, their color using the label.color argument, and their level of transparency using the label.alpha argumment:
+
+```{r labeledit, echo = TRUE, eval = TRUE}
+# changing label size
+ggnet2(net, size = 12, label = TRUE, label.size = 5)
+
+#changing label color
+ggnet2(net, size = 12, label = TRUE, color = "black", label.color = "white")
+
+# changing label transparency
+ggnet2(net, label = TRUE, label.alpha = 0.75)
+```
+
+### Let's try practicing on our own!
+
+Using the code above as an example, modify your network so that the labels are 1/4 as big as the node size, the nodes are tomato-colored with steel blue labels, and 50% transparency!
+
+```{r solution2, echo = FALSE, eval = FALSE}
+# solution
+
+```
+
+## More fun with networks!
+
+There are LOT more things you can do with networks than there is time to go over in this tutorial. Some examples of other ways we could have modified our network using ggnet2 include...
+- altering the node legends using the alpha.legend, color.legend, shape.legend, and size.legend arguments
+- changing the line type of the edges
+- adding arrows to our edges to indicate directionality 
+- coloring edges based on the attributes of connected nodes
+- removing nodes based on missing values
+
+Furthermore, ggnet2 is just ONE package we can use to visualize networks. Other common packages to visualize networks include *igraph* and *networkD3*. 
+- igraph is useful for building a network diagram from adjacency matrix, edge list, literal list of connections, and more. 
+- networkD3 allows users to build **interactive** network diagrams with R, including zoom, hover nodes, reorganize the layout. This package will provide features for dynamic data manipulation and visualization and allows users to become active participants in data visualization process by allowing users to explore data points, hierarchies among the data, filter data by groups, and more
+
+
+
 #(Paige) Exercise 3: Introduction to phylogenies
 
 # Resources
