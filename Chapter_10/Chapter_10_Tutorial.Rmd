@@ -304,7 +304,6 @@ SepalDensity <- all.sepals +
 ggarrange(PetalScatter, PetalViolin, SepalScatter, SepalBox, SepalDensity, ncol=2, nrow=3, widths = c(1, .75), common.legend = TRUE, legend="bottom")
 ```
 
-
 ## Challenge/Next Steps
 To explore 'ggpubr', 'gridExtra', 'ggplot2', and other packages more, check out this great tutorial from STHDA [link](http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/#use-common-legend-for-combined-ggplots). This tutorial goes into even more ways to arrange and visualize plots to get your figures publication-ready!
 
@@ -555,6 +554,10 @@ Furthermore, ggnet2 is just ONE package we can use to visualize networks. Other 
 - Chapter 10 of Gandrund(2015)
 - Chapter 1 of Wickham and Grolemund (2017)
 - Chapter 22 of Guangchuang et al. (2017)
+- ggplot2 and Beyond Tutorials
+  - https://bio304-class.github.io/bio304-book/introduction-to-ggplot2.html
+  - http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/#mix-table-text-and-ggplot
+  
 
 # References
 
