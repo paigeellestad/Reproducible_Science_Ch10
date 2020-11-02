@@ -48,7 +48,8 @@ In this tutorial, we will cover the basics of making figures in R and provide se
 This tutorial provides students with opportunities to learn procedures to:
 
 - Insert figures into an R Markdown file. 
-- Create, customize, and arrange figures in R using the 'ggplot2' package.
+- Create figures using R's default graphics.
+- Create, customize, and arrange figures in R using 'ggplot2' and associated packages.
 - Create and customize network and phylogenetic tree figures.
 
 ## Associated Files, Data, and Packages
@@ -242,7 +243,7 @@ print(DogRating, vp = define_region(row = 3, col = 1:2))
 ```
 
 **Method 3:** 'ggpubr' package and the ggarrange() function
-```{r ggpubr Arrangements}
+```{r Arrange with ggpubr}
 ggarrange(DogAgeBreed,                  # First row with breed/age histogram
           ggarrange(DogAge, ncol = 2), # Second row with age histogram
           ggarrange(DogRating, ncol = 1), #Third row with rating box plots
@@ -286,7 +287,7 @@ ggarrange(DogAgeBreed1A,
 ## Exercise 1B: Revisiting the Iris Data from Chapter 8!
 We will use the iris dataset that we first saw in the Chapter 8 tutorial to work on some more complex arrangement and figure customization. We will use the steps below to produce this:
 ```{r Exercise1B Figures, echo=FALSE, fig.align="center", fig.cap="Exercise 1B Sample Figures", out.width = '100%'}
-knitr::include_graphics("solution1B.png")
+knitr::include_graphics("solution1b.png")
 ```
 Our end result is by no means complete, but will give you some practice for making different plot types and getting used to using these different packages. Feel free to edit axis labels, titles, and more! &nbsp;
 
