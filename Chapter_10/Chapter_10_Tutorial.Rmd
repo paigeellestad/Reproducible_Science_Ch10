@@ -27,10 +27,10 @@ library(ggplotgui) #to access a shiny app for ggplots
 library(gridExtra) #to arrange multiple plots on a page
 library(grid) #another way to arrange multiple plots
 library(ggpubr) #great package for making publication ready plots
-library(GGally)
-library(network)
-library(sna)
-library(RColorBrewer)
+library(GGally) #contains the ggnet2 function we will use to make networks
+library(network) #tools to create and modify network objects
+library(sna) #more tools for network analysis 
+library(RColorBrewer) #provides color schemes for figures
 
 
 #Generate BibTex citation file for all R packages used to produce report
@@ -338,7 +338,7 @@ To continue  our understanding of ggplot2, we will be using the ggnet2 function,
 
 ## Let's create a basic network!
 
-For the purpose of this tutorial, we are going to create an undirected basic network, with 10 nodes named "a, b, ..., i, j" and a high likelihood of an edge to eist between them:
+For the purpose of this tutorial, we are going to create an undirected basic network, with 10 nodes named "a, b, ..., i, j" and a high likelihood of an edge to exist between them:
 
 ```{r network, echo = TRUE, eval = TRUE}
 # random graph
