@@ -145,7 +145,7 @@ Let's start by exploring our GoodDogs data using a point and click shiny app ava
 ggplotgui::ggplot_shiny(GoodDogs) #this opens a shiny app to point and click make a ggplot
 ```
 
-We can copy the code that the ggplot GUI app uses to produce this histogram as a shortcut. Because the app is limited in features, we will work on customizing the histogram more next.
+We can copy the code that the ggplot GUI app uses to produce this histogram as a shortcut. I also copied the code for a ratings histogram. Because the app is limited in features, we will work on customizing these figures more next
 ```{r Code from GUI}
 #copied from the ggplot GUI app, changed df to GoodDogs and saved as object 
 DogAge <- ggplot(GoodDogs, aes(x = Age)) +
@@ -154,7 +154,16 @@ DogAge <- ggplot(GoodDogs, aes(x = Age)) +
   ggtitle('Dog Ages') +
   theme_classic()
 DogAge
+
+#copied ratings histogram, changed df to GoodDogs and saved as object
+DogRating <- ggplot(GoodDogs, aes(x = Rating)) +
+  geom_histogram(position = 'identity', alpha = 0.8, binwidth = 1) +
+  labs(x = 'Rating', y = 'Count') +
+  ggtitle('Dog Ratings') +
+  theme_classic()
+DogRating
 ```
+
 
 
     
