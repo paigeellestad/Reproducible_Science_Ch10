@@ -142,10 +142,10 @@ Now that we are feeling more comfortable with ggplot's grammar, let's explore so
 
 Let's start by exploring our GoodDogs data using a point and click shiny app available through the 'ggplotgui' package. This is a really nice tool for getting familiar with the 'ggplot2' grammar and for very quickly visualizing our data. We will use this to create a very simple histogram to see the age distribution of the dogs in our dataset.
 ```{r Shiny app for ggplot visualization}
-ggplotgui::ggplot_shiny(GoodDogs) #this opens a shiny app to point and click make a ggplot
+#ggplotgui::ggplot_shiny(GoodDogs) #this opens a shiny app to point and click make a ggplot; note: commented out for tutorial - Haley will demonstrate this for the class
 ```
 
-We can copy the code that the ggplot GUI app uses to produce this histogram as a shortcut. I also copied the code for a ratings histogram. Because the app is limited in features, we will work on customizing these figures more next
+We can copy the code that the ggplot GUI app uses to produce this histogram as a shortcut. I also copied the code for age histograms by breed and goodness rating boxplots by breed. Because the app is limited in features, we will work on customizing these figures more next. But first, let's start by running this code chunk and see the base ggplots we have produced. Ggplots can be saved as objects, which is a helpful feature.
 ```{r Code from GUI}
 #copied from the ggplot GUI app, changed df to GoodDogs and saved as object 
 DogAge <- ggplot(GoodDogs, aes(x = Age)) +
@@ -155,11 +155,20 @@ DogAge <- ggplot(GoodDogs, aes(x = Age)) +
   theme_classic()
 DogAge
 
-#copied ratings histogram, changed df to GoodDogs and saved as object
-DogRating <- ggplot(GoodDogs, aes(x = Rating)) +
+#copied from the ggplot GUI app, changed df to GoodDogs and saved as object 
+DogAgeBreed <- ggplot(GoodDogs, aes(x = Age)) +
   geom_histogram(position = 'identity', alpha = 0.8, binwidth = 1) +
-  labs(x = 'Rating', y = 'Count') +
-  ggtitle('Dog Ratings') +
+  facet_grid( . ~ Breed ) +
+  labs(x = 'Dog Age (years)', y = 'Count of Dogs') +
+  ggtitle('Dog Breed Age Comparisons') +
+  theme_classic()
+DogAgeBreed
+
+#copied ratings boxplot, changed df to GoodDogs and saved as object
+DogRating <- ggplot(GoodDogs, aes(x = Breed, y = Rating)) +
+  geom_boxplot(notch = FALSE) +
+  labs(x = 'Dog Breed', y = 'Goodness Rating') +
+  ggtitle('Dog Breed Goodness Ratings') +
   theme_classic()
 DogRating
 ```
@@ -167,7 +176,7 @@ DogRating
 
 
     
-## Exercise 1A: Producing a figure like this
+## Exercise 1A: 
 
 ## Exercise 1B: Producing and arranging two figures like this
 
