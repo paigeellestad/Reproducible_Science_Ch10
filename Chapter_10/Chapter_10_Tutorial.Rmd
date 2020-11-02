@@ -251,6 +251,8 @@ We will use the iris dataset that we first saw in the Chapter 8 tutorial to work
 ```{r Exercise1B Figures, echo=FALSE, fig.align="center", fig.cap="Exercise 1B Sample Figures", out.width = '100%'}
 knitr::include_graphics("solution1B.png")
 ```
+Our end result is by no means complete, but will give you some practice for making different plot types and getting used to using these different packages. Feel free to edit axis labels, titles, and more!
+
 **Steps:**
 1. Create the following plots using the iris dataset and 'ggplot2' (challenge: use the 'ggpubr' package to create the plots - see link below):
     + A box plot of the Sepal.Width data
@@ -278,7 +280,7 @@ PetalScatter <- ggplot(data=iris,aes(x=Petal.Width, y=Petal.Length,color=Species
   theme_minimal()
 
 #layered violin plot (violin + jitter)
-p <- ggplot(iris, mapping = aes(x = Species, y = Sepal.Width, color = Species))
+p <- ggplot(iris, mapping = aes(x = Species, y = Petal.Length, color = Species))
 violin.layer <- geom_violin() 
 jitter.layer <- geom_jitter(width=0.15, height=0.05, alpha=0.5, size=0.75) 
 
