@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r packages, echo=FALSE, warning=FALSE, include=FALSE}
 #everyone can add in the packages that they will need. 
-library(ape)
+library(knitr) #knitting tools
 library(datasets) #to access base datasets - there's a lot to choose from in here!
 library(readr) #to load other data files (e.g., .csv)
 library(ggplot2) #to do some fancier plotting
@@ -31,25 +31,33 @@ library(GGally) #contains the ggnet2 function we will use to make networks
 library(network) #tools to create and modify network objects
 library(sna) #more tools for network analysis 
 library(RColorBrewer) #provides color schemes for figures
-
+library(ape)
 
 #Generate BibTex citation file for all R packages used to produce report
 knitr::write_bib(.packages(), file = 'packages.bib')
 ```
 
 # Introduction
-* **Session 1:** Introduction, Figure Making in Base R, Using ggplot
-* **Session 2:** Advanced Figure Making: Making Networks and Phylogenetic Trees
+In this tutorial, we will cover the basics of making figures in R and provide several examples and exercises to explore a variety of figure types including scatter plots, box plots, histograms, networks, and phylogenetic trees. The tutorial will be taught in two sessions:
 
-## Aim, learning outcomes, associated files, depedencies, etc. 
+* **Session 1:** Introduction, Basic Figure Making, Using 'ggplot2'
+* **Session 2:** Specialized Figure Making: Making Networks and Phylogenetic Trees
 
-## Data structure
+## Learning outcomes
 
-## Review of inserting Figures (Ch1 bookdown tutorial)
+This tutorial provides students with opportunities to learn procedures to:
 
-```{r ReproWorkflow, echo=FALSE, fig.align="center", fig.cap="random photo", out.width = '100%'}
-knitr::include_graphics("random_photo.jpg")
-```
+- Insert figures into an R Markdown file. 
+- Create, customize, and arrange figures in R using the 'ggplot2' package.
+- Create and customize network and phylogenetic tree figures.
+
+## Associated Files, Data, and Packages
+
+The files to support this tutorial are deposited in the shared Google Drive at this path: 
+  
+  + `Reproducible_Science/Bioinformatic_tutorials/Chapter_10`
+
+In addition to the data files stored in this path, this tutorial will also use the *pressure* and *iris* datasets available through R's 'datasets' package. All packages needed to successfully complete this tutorial are listed in the "packages" code chunk in the .Rmd file. 
 
 # Making Figures with Default Graphics and ggplot2
 This section will address different ways to make figures in R. Specifically, we will cover:
@@ -71,6 +79,13 @@ Gandrud outlines several useful chunk options for figures in R Markdown document
 * **fig.align:** This sets the alignment of your figure to left, center, or right.
 * **fig.cap and fig.lb:** These set your figure's LaTeX caption and label. 
 
+## Inserting Figures (Review from the Chapter 1)
+In Chapter 1, we learned about how to knit figures from images (ex. if you made a figure in a different program or R file), so we will just briefly review that again here. We will use the include_graphics() function of the 'knitr' package to do this. This example shows how to knit some draft ArcGIS maps, we will also specify the fig.cap, fig.align, and out.width. 
+```{r Sample Maps, fig.align="center", fig.cap="Example: Inserting ArcGIS Draft Maps", out.width = '100%'}
+knitr::include_graphics("Sample_ArcGIS_Maps.PNG")
+```
+Note: Use 'echo=FALSE' in chunk options to hide your code chunk. The code chunk is included here to demonstrate some of the other chunk options specific to figures.
+
 ## Refresher: Plots with R's Default Graphics
 Because we already have some experience with Base R's plotting functions, this section serves as a little refresh on how to do some basic plotting before we get into "fancy" plotting with 'ggplot2'. Every time you create a new R Markdown document, you probably have noticed the inclusion of the pressure plot code chunk. That is exactly how to plot in Base R!
 ```{r Pressure plot example}
@@ -88,12 +103,12 @@ GoodDogs <- read_csv("GoodDogs.csv")
 View(GoodDogs)
 ```
 
-Now that we can see we have data on both fetch time and fetch distance, let's make a scatterplot, assuming that time is dependent on the distance the ball is thrown (and not on how fast a dog is or its focus on the task at hand).
+Now that we can see we have data on both fetch time and fetch distance, let's make a scatter plot, assuming that time is dependent on the distance the ball is thrown (and not on how fast a dog is or its focus on the task at hand).
 ```{r GoodDogs fetch plot}
 plot(GoodDogs$Fetch_Distance, GoodDogs$Fetch_Time)
 ```
 
-Now that we have the basic scatterplot down, let's clean up our axis labels and add a title. We can do this by specifying the xlab, ylab, and main arguments in the plot() function.
+Now that we have the basic scatter plot down, let's clean up our axis labels and add a title. We can do this by specifying the xlab, ylab, and main arguments in the plot() function.
 ```{r GoodDogs fetch plot 2}
 plot(GoodDogs$Fetch_Distance, GoodDogs$Fetch_Time,
      xlab = "Distance Ball is Thrown (ft)",
@@ -113,9 +128,9 @@ plot(GoodDogs$Fetch_Distance, GoodDogs$Fetch_Time,
 The grammar for this package can feel a little unwieldy at first, so keeping this cheatsheet ([link](https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)) handy might be helpful!
 
 ### Example 1: Revisting Our GoodDogs Data
-Let's start to get to know ggplot better by revisiting our fetch data. First, we need to specify our data using ggplot(). Next, we specify that we want a scatterplot using geom_point().
+Let's start to get to know ggplot better by revisiting our fetch data. First, we need to specify our data using ggplot(). Next, we specify that we want a scatter plot using geom_point().
 ```{r GoodDogs fetch ggplot}
-#make a basic scatterplot
+#make a basic scatter plot
 ggplot(GoodDogs, aes(x=GoodDogs$Fetch_Distance, y=GoodDogs$Fetch_Time)) +
   geom_point() 
 ```
@@ -191,6 +206,7 @@ DogRating
 Before we get to our first Exercise to start practicing making and arranging ggplots, let's first go over how to arrange multiple ggplots on a page. We can use the plots we just made as an example. Faceting, like we see in the DogAgeBreed plot, is one way to achieve this. &nbsp;
 
 **Method 1:** 'gridExtra' package and grid.arrange() function &nbsp;
+
 The grid.arrange() function of the 'gridExtra' package is another easy option for arranging multiple plots. We have already saved our ggplots as objects, which is the first step in arranging them.
 ```{r Arrange Dog Plots}
 grid.arrange(DogAgeBreed, DogRating, nrow=1) #nrow=1 is specifying we want them in a single row
@@ -208,6 +224,7 @@ grid.arrange(DogAge, DogAgeBreed, DogRating, nrow=2, ncol=2)
 ```
 
 **Method 2:** 'grid' package &nbsp;
+
 The 'grid' package also allows for arranging plots and can be useful for more complicated arrangements. This can help use span over multiple columns or rows. Let's see an example here.
 ```{r Arrange with Grid}
 # Move to a new page
@@ -237,7 +254,15 @@ Because there is likely a range of ggplot experience in this group, think of the
 ```{r Exercise1A Figures, echo=FALSE, fig.align="center", fig.cap="Exercise 1A Sample Figures", out.width = '100%'}
 knitr::include_graphics("solution1A.png")
 ```
+**Steps:**
 
+1. Create a histogram of dog ages faceted and colored based on dog breed. This histogram should have no background, panels, or gridlines. Add a title and axis labels.
+    + Save the histogram as an object once you are happy with its format.
+2. Create a boxplot (x = Breed, y = Rating) and color it based on dog breed. This boxplot should have no background, panels, or gridlines. Add a title and axis labels.
+    + Save the boxplot as an object once you are happy with its format.
+3. Use ggarrange() or another method to format your two plots into a two row arrangement with a common legend.
+
+If you get stuck, my solution is available in the .Rmd file (Chunk: Solution1A)!
 ```{r Solution1A, echo=FALSE, eval=FALSE}
 DogAgeBreed1A <- ggplot(GoodDogs, aes(x = Age, fill = Breed)) +
   geom_histogram(position = 'identity', alpha = 0.8, binwidth = 1) +
@@ -276,6 +301,7 @@ Our end result is by no means complete, but will give you some practice for maki
 4. Use the minimal theme for all plots.
 5. Arrange the plots from steps 1-3 in 3 rows and with a common legend for iris species. Try specifying column widths to help with crowding in the resulting arrangement.
 
+If you get stuck, my solution is available in the .Rmd file (Chunk: Solution1B)!
 ```{r Solution1B, echo=FALSE, eval=FALSE}
 #refresh on the variables in the iris dataset
 summary(iris)
@@ -556,24 +582,17 @@ There are LOT more things you can do with networks than there is time to go over
 
 Furthermore, ggnet2 is just ONE package we can use to visualize networks. Other common packages to visualize networks include *igraph* and *networkD3*. 
 
-* igraph is useful for building a network diagram from adjacency matrix, edge list, literal list of connections, and more. 
-* networkD3 allows users to build **interactive** network diagrams with R, including zoom, hover nodes, reorganize the layout. This package will provide features for dynamic data manipulation and visualization and allows users to become active participants in data visualization process by allowing users to explore data points, hierarchies among the data, filter data by groups, and more
-
-
+* **igraph** is useful for building a network diagram from adjacency matrix, edge list, literal list of connections, and more. 
+* **networkD3** allows users to build **interactive** network diagrams with R, including zoom, hover nodes, reorganize the layout. This package will provide features for dynamic data manipulation and visualization and allows users to become active participants in data visualization process by allowing users to explore data points, hierarchies among the data, filter data by groups, and more
 
 # Exercise 3: Visualizing phylogenetic trees in R
 
 ## What is a phylogeny? 
 A phylogenetic tree is a diagram that represents evolutionary relationships among organisms. Phylogenetic trees are hypotheses, not definitive facts, based on collected information about a set of species, eg. morphology or DNA.
 
-##Formats used in this tutorial
-* FASTA: FASTA format is a text-based format for representing either nucleotide sequences or peptide sequences, in which base pairs or amino acids are represented using single-letter codes. A sequence in FASTA format begins with a single-line description, followed by lines of sequence data.
-* NEWICK: Newick format is a commonly used
-way of representing tree topologies as text. Put simply, monophyletic clades are surrounded
-by parentheses and sister clades are separated by commas. For example, a simple tree could
-be written as (((A,B),C),(D,E)). Newick format also contains information about branch
-lengths (after colons) and node names (after closed parentheses).
-
+## Formats used in this tutorial
+* **FASTA:** FASTA format is a text-based format for representing either nucleotide sequences or peptide sequences, in which base pairs or amino acids are represented using single-letter codes. A sequence in FASTA format begins with a single-line description, followed by lines of sequence data.
+* **NEWICK:** Newick format is a commonly used way of representing tree topologies as text. Put simply, monophyletic clades are surrounded by parentheses and sister clades are separated by commas. For example, a simple tree could be written as (((A,B),C),(D,E)). Newick format also contains information about branch lengths (after colons) and node names (after closed parentheses).
 
 ### Creating trees from DNA seqs using the package ape
 ```{r ape_tree, include=TRUE}
