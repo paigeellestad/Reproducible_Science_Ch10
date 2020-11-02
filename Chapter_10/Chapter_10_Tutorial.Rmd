@@ -38,8 +38,8 @@ knitr::write_bib(.packages(), file = 'packages.bib')
 ```
 
 # Introduction
-- **Session 1:** Introduction, Figure Making in Base R, Using ggplot
-- **Session 2:** Advanced Figure Making: Making Networks and Phylogenetic Trees
+* **Session 1:** Introduction, Figure Making in Base R, Using ggplot
+* **Session 2:** Advanced Figure Making: Making Networks and Phylogenetic Trees
 
 ## Aim, learning outcomes, associated files, depedencies, etc. 
 
@@ -54,11 +54,12 @@ knitr::include_graphics("random_photo.jpg")
 # Making Figures with Default Graphics and ggplot2
 
 ## Chunk Options for Figures
-Gandrud outlines several useful chunk options for figures in R Markdown documents:
-- **fig.path:** This tells knitr where to save your figures by specifying a file path.
-- **out.height and out.width:** These set your figure's output height and width. R Markdown uses pixels (ex. To set height to 200 pixels, use out.height='200px'). If you are using LaTeX, you can also specify the height or width using cm, in, or as a proportion of a page element (ex. To set width to 80% of the text width, use outwidth='0.8\\textwidth').
-- **fig.align:** This sets the alignment of your figure to left, center, or right.
-- **fig.cap and fig.lb:** These set your figure's LaTeX caption and label. 
+Gandrud outlines several useful chunk options for figures in R Markdown documents: 
+
+* **fig.path:** This tells knitr where to save your figures by specifying a file path.
+* **out.height and out.width:** These set your figure's output height and width. R Markdown uses pixels (ex. To set height to 200 pixels, use out.height='200px'). If you are using LaTeX, you can also specify the height or width using cm, in, or as a proportion of a page element (ex. To set width to 80% of the text width, use outwidth='0.8\\textwidth').
+* **fig.align:** This sets the alignment of your figure to left, center, or right.
+* **fig.cap and fig.lb:** These set your figure's LaTeX caption and label. 
 
 ## Refresher: Plots with R's Default Graphics
 Because we already have some experience with Base R's plotting functions, this section serves as a little refresh on how to do some basic plotting before we get into "fancy" plotting with 'ggplot2'. Every time you create a new R Markdown document, you probably have noticed the inclusion of the pressure plot code chunk. That is exactly how to plot in Base R!
@@ -94,11 +95,12 @@ plot(GoodDogs$Fetch_Distance, GoodDogs$Fetch_Time,
 ### What is ggplot2?
 'ggplot2' allows for additional flexibility and customization of our figures. Using the "grammar of graphics", 
 'ggplot2' is able to build every graph from the same base components:
-- a data set (e.g., your data)
-- a set of geoms (e.g., the points representing your data + how you want them to look)
-- a coordinate system (e.g., defining where the data points are)
 
-The grammar for this package can feel a little unwieldy at first, so keeping this cheatsheet [link] (https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf) handy might be helpful!
+* a data set (e.g., your data)
+* a set of geoms (e.g., the points representing your data + how you want them to look)
+* a coordinate system (e.g., defining where the data points are)
+
+The grammar for this package can feel a little unwieldy at first, so keeping this cheatsheet ([link](https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)) handy might be helpful!
 
 ### Example 1: Revisting Our GoodDogs Data
 Let's start to get to know ggplot better by revisiting our fetch data. First, we need to specify our data using ggplot(). Next, we specify that we want a scatterplot using geom_point().
@@ -141,7 +143,7 @@ panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) 
 ```
 
 ### Example 2: Arranging ggplots
-Now that we are feeling more comfortable with ggplot's grammar, let's explore some additional customization options using 'ggplot2'. 
+Now that we are feeling more comfortable with ggplot's grammar, let's explore some additional customization options using 'ggplot2'. &nbsp;
 
 Let's start by exploring our GoodDogs data using a point and click shiny app available through the 'ggplotgui' package. This is a really nice tool for getting familiar with the 'ggplot2' grammar and for very quickly visualizing our data. We will use this to create a very simple histogram to see the age distribution of the dogs in our dataset.
 ```{r Shiny app for ggplot visualization}
@@ -176,7 +178,7 @@ DogRating <- ggplot(GoodDogs, aes(x = Breed, y = Rating)) +
 DogRating
 ```
 
-Before we get to our first Exercise to start practicing making and arranging ggplots, let's first go over how to arrange multiple ggplots on a page. We can use the plots we just made as an example. Faceting, like we see in the DogAgeBreed plot, is one way to achieve this. 
+Before we get to our first Exercise to start practicing making and arranging ggplots, let's first go over how to arrange multiple ggplots on a page. We can use the plots we just made as an example. Faceting, like we see in the DogAgeBreed plot, is one way to achieve this. &nbsp;
 
 **Method 1:** 'gridExtra' package and grid.arrange() function
 The grid.arrange() function of the 'gridExtra' package is another easy option for arranging multiple plots. We have already saved our ggplots as objects, which is the first step in arranging them.
@@ -251,9 +253,10 @@ We will use the iris dataset that we first saw in the Chapter 8 tutorial to work
 ```{r Exercise1B Figures, echo=FALSE, fig.align="center", fig.cap="Exercise 1B Sample Figures", out.width = '100%'}
 knitr::include_graphics("solution1B.png")
 ```
-Our end result is by no means complete, but will give you some practice for making different plot types and getting used to using these different packages. Feel free to edit axis labels, titles, and more!
+Our end result is by no means complete, but will give you some practice for making different plot types and getting used to using these different packages. Feel free to edit axis labels, titles, and more! &nbsp;
 
 **Steps:**
+
 1. Create the following plots using the iris dataset and 'ggplot2' (challenge: use the 'ggpubr' package to create the plots - see link below):
     + A box plot of the Sepal.Width data
     + A faceted scatter plot with trend lines of y = “Petal.Length” by x = “Petal.Width"
@@ -305,19 +308,19 @@ ggarrange(PetalScatter, PetalViolin, SepalScatter, SepalBox, SepalDensity, ncol=
 ```
 
 ## Challenge/Next Steps
-To explore 'ggpubr', 'gridExtra', 'ggplot2', and other packages more, check out this great tutorial from STHDA [link](http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/#use-common-legend-for-combined-ggplots). This tutorial goes into even more ways to arrange and visualize plots to get your figures publication-ready!
+To explore 'ggpubr', 'gridExtra', 'ggplot2', and other packages more, check out this great tutorial from STHDA ([link](http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/#use-common-legend-for-combined-ggplots)). This tutorial goes into even more ways to arrange and visualize plots to get your figures publication-ready!
 
 # Exercise 2: Networks
 
 ## What is a network?
- At its core, a network is simply a set of vertices connected by a set of edges. There are many kinds of networks, and network analyses can be used across disciplines.vFor instance, networks of scientificvcollaboration, a food web of marine animals, and American college football games are all covered in a paper on community detection in networks by Girvan and Newman (2002). Additionally, Buldyrev et al. (2010) study node failure in interdependent networks like power grids. Social networks such as links between television and film actors found on http://www.imdb.com/ and neural networks, like the completely mapped neural network of the C. elegans worm are also extensively studied (Watts and
-Strogatz, 1998).
+ At its core, a network is simply a set of vertices connected by a set of edges. There are many kinds of networks, and network analyses can be used across disciplines. For instance, networks of scientific collaboration, a food web of marine animals, and American college football games are all covered in a paper on community detection in networks by Girvan and Newman (2002). Additionally, Buldyrev et al. (2010) study node failure in interdependent networks like power grids. Social networks such as links between television and film actors found on http://www.imdb.com/ and neural networks, like the completely mapped neural network of the C. elegans worm are also extensively studied (Watts and Strogatz, 1998).
 
 ## Network terminology
 
 In network analyses, "nodes" designate the vertices of a network whereas "edges" indicate the ties between nodes. The edges in networks can be *directed*, indicating an ordering of vertices (wherein switching the direction of hte edge would change the structure of the network), or the edges can be *undirected*, meaning the edges are simply connections between vertices where order does not matter. 
--  The **World Wide Web**  is an example of directed edges: hyperlinnks connect one Web apge to another, but not necessraily the other way around!
-- **Co-authorship networks** are eamples of undirected networks, wherein nodes are authors and are connected by an edge if they have written a publication together (direction does not matter!)
+
+*  The **World Wide Web**  is an example of directed edges: hyperlinnks connect one Web apge to another, but not necessraily the other way around!
+* **Co-authorship networks** are eamples of undirected networks, wherein nodes are authors and are connected by an edge if they have written a publication together (direction does not matter!)
 
 ## Visualizing a network diagram in R using ggnet2
 
@@ -358,9 +361,9 @@ ggnet2(net, size = 6, color = "black", edge.size = 1, edge.color = "grey")
 
 Using these basic methods, we can set the color, size, shape, and even transparency of the nodes. Let's practice! Using the code chunks above as an example, modify your network so that it contains:
 
-- grey nodes
-- red edges
-- try different versions with small vs. big nodes and thin vs. thick edges
+* grey nodes
+* red edges
+* try different versions with small vs. big nodes and thin vs. thick edges
 
 ## Node placement
 
@@ -542,8 +545,9 @@ There are LOT more things you can do with networks than there is time to go over
 - removing nodes based on missing values
 
 Furthermore, ggnet2 is just ONE package we can use to visualize networks. Other common packages to visualize networks include *igraph* and *networkD3*. 
-- igraph is useful for building a network diagram from adjacency matrix, edge list, literal list of connections, and more. 
-- networkD3 allows users to build **interactive** network diagrams with R, including zoom, hover nodes, reorganize the layout. This package will provide features for dynamic data manipulation and visualization and allows users to become active participants in data visualization process by allowing users to explore data points, hierarchies among the data, filter data by groups, and more
+
+* igraph is useful for building a network diagram from adjacency matrix, edge list, literal list of connections, and more. 
+* networkD3 allows users to build **interactive** network diagrams with R, including zoom, hover nodes, reorganize the layout. This package will provide features for dynamic data manipulation and visualization and allows users to become active participants in data visualization process by allowing users to explore data points, hierarchies among the data, filter data by groups, and more
 
 
 
