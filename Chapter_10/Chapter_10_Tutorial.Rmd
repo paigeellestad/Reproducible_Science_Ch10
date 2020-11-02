@@ -24,6 +24,9 @@ library(datasets) #to access base datasets - there's a lot to choose from in her
 library(readr) #to load other data files (e.g., .csv)
 library(ggplot2) #to do some fancier plotting
 library(ggplotgui) #to access a shiny app for ggplots
+library(gridExtra) #to arrange multiple plots on a page
+library(grid) #another way to arrange multiple plots
+library(ggpubr) #great package for making publication ready plots
 library(GGally)
 library(network)
 library(sna)
@@ -48,7 +51,7 @@ knitr::write_bib(.packages(), file = 'packages.bib')
 knitr::include_graphics("random_photo.jpg")
 ```
 
-# (Haley) Making Figures with Default Graphics and ggplot2
+# Making Figures with Default Graphics and ggplot2
 
 ## Chunk Options for Figures
 Gandrud outlines several useful chunk options for figures in R Markdown documents:
@@ -58,7 +61,7 @@ Gandrud outlines several useful chunk options for figures in R Markdown document
 - **fig.cap and fig.lb:** These set your figure's LaTeX caption and label. 
 
 ## Refresher: Plots with R's Default Graphics
-Because we already have some experience with Base R's plotting functions, this section serves as a little refresh on how to do some basic plotting before we get into "fancy" plotting with ggplot2. Every time you create a new R Markdown document, you probably have noticed the inclusion of the pressure plot code chunk. That is exactly how to plot in Base R!
+Because we already have some experience with Base R's plotting functions, this section serves as a little refresh on how to do some basic plotting before we get into "fancy" plotting with 'ggplot2'. Every time you create a new R Markdown document, you probably have noticed the inclusion of the pressure plot code chunk. That is exactly how to plot in Base R!
 ```{r Pressure plot example}
 #taking a look at what the pressure data is
 summary(pressure)
@@ -137,7 +140,7 @@ ggplot(GoodDogs, aes(x=GoodDogs$Fetch_Distance, y=GoodDogs$Fetch_Time, color=Goo
 panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) #specify that the title should be in bold (face), format the legend title (legend.title and legend.title.align), and change the background color and gridlines (panel arguments)
 ```
 
-### Example 2: Additional Customization Using ggplot2
+### Example 2: Arranging ggplots
 Now that we are feeling more comfortable with ggplot's grammar, let's explore some additional customization options using 'ggplot2'. 
 
 Let's start by exploring our GoodDogs data using a point and click shiny app available through the 'ggplotgui' package. This is a really nice tool for getting familiar with the 'ggplot2' grammar and for very quickly visualizing our data. We will use this to create a very simple histogram to see the age distribution of the dogs in our dataset.
@@ -145,7 +148,7 @@ Let's start by exploring our GoodDogs data using a point and click shiny app ava
 #ggplotgui::ggplot_shiny(GoodDogs) #this opens a shiny app to point and click make a ggplot; note: commented out for tutorial - Haley will demonstrate this for the class
 ```
 
-We can copy the code that the ggplot GUI app uses to produce this histogram as a shortcut. I also copied the code for age histograms by breed and goodness rating boxplots by breed. Because the app is limited in features, we will work on customizing these figures more next. But first, let's start by running this code chunk and see the base ggplots we have produced. Ggplots can be saved as objects, which is a helpful feature.
+We can copy the code that the ggplot GUI app uses to produce this histogram as a shortcut. I also copied the code for age histograms by breed and goodness rating boxplots by breed. Because the app is limited in features, we will work on customizing these figures more next in Exercise 1A. But first, let's start by running this code chunk and see the base ggplots we have produced. Ggplots can be saved as objects, which is a helpful feature.
 ```{r Code from GUI}
 #copied from the ggplot GUI app, changed df to GoodDogs and saved as object 
 DogAge <- ggplot(GoodDogs, aes(x = Age)) +
@@ -155,7 +158,7 @@ DogAge <- ggplot(GoodDogs, aes(x = Age)) +
   theme_classic()
 DogAge
 
-#copied from the ggplot GUI app, changed df to GoodDogs and saved as object 
+#copied from the ggplot GUI app, changed df to GoodDogs and saved as object; note: this is an example of faceting
 DogAgeBreed <- ggplot(GoodDogs, aes(x = Age)) +
   geom_histogram(position = 'identity', alpha = 0.8, binwidth = 1) +
   facet_grid( . ~ Breed ) +
@@ -173,12 +176,77 @@ DogRating <- ggplot(GoodDogs, aes(x = Breed, y = Rating)) +
 DogRating
 ```
 
+Before we get to our first Exercise to start practicing making and arranging ggplots, let's first go over how to arrange multiple ggplots on a page. We can use the plots we just made as an example. Faceting, like we see in the DogAgeBreed plot, is one way to achieve this. 
+
+**Method 1:** 'gridExtra' package and grid.arrange() function
+The grid.arrange() function of the 'gridExtra' package is another easy option for arranging multiple plots. We have already saved our ggplots as objects, which is the first step in arranging them.
+```{r Arrange Dog Plots}
+grid.arrange(DogAgeBreed, DogRating, nrow=1) #nrow=1 is specifying we want them in a single row
+```
+
+But uh oh! That's difficult to read. Let's try arranging them in two rows.
+```{r Arrange Dog Plots Rows}
+grid.arrange(DogAgeBreed, DogRating, nrow=2) #trying two rows
+```
+
+You can also arrange the plots by specifying columns. Let's add in our DogAge histogram to illustrate this.
+```{r Arrange Dog Plots Rows and Columns}
+#two rows, two columns
+grid.arrange(DogAge, DogAgeBreed, DogRating, nrow=2, ncol=2) 
+```
+
+**Method 2:** 'grid' package 
+The 'grid' package also allows for arranging plots and can be useful for more complicated arrangements. This can help use span over multiple columns or rows. Let's see an example here.
+```{r Arrange with Grid}
+# Move to a new page
+grid.newpage()
+# Create layout : nrow = 3, ncol = 2
+pushViewport(viewport(layout = grid.layout(nrow = 3, ncol = 2)))
+# A helper function to define a region on the layout
+define_region <- function(row, col){
+  viewport(layout.pos.row = row, layout.pos.col = col)
+} 
+# Arrange the plots
+print(DogAgeBreed, vp = define_region(row = 1, col = 1:2))   # Span over two columns
+print(DogAge, vp = define_region(row = 2, col = 1))
+print(DogRating, vp = define_region(row = 3, col = 1:2))
+```
+
+**Method 3:** 'ggpubr' package and the ggarrange() function
+```{r ggpubr Arrangements}
+ggarrange(DogAgeBreed,                  # First row with breed/age histogram
+          ggarrange(DogAge, ncol = 2), # Second row with age histogram
+          ggarrange(DogRating, ncol = 1), #Third row with rating box plots
+          nrow = 3)                                   
+```
 
 
-    
-## Exercise 1A: 
+## Exercise 1A: Customizing the DogAgeBreed and DogRating ggplots
+Because there is likely a range of ggplot experience in this group, think of these exercises like a choose your own adventure. If you want to play around with 'ggplot2' and do your own thing with the plots, feel free to do so! Otherwise, you can work to produce ggplots that look like this:
+```{r Exercise1A Figures, echo=FALSE, fig.align="center", fig.cap="Exercise 1A Sample Figures", out.width = '100%'}
+knitr::include_graphics("solution1A.jpg")
+```
 
-## Exercise 1B: Producing and arranging two figures like this
+```{r Solution1A}
+DogAgeBreed1A <- ggplot(GoodDogs, aes(x = Age, fill = Breed)) +
+  geom_histogram(position = 'identity', alpha = 0.8, binwidth = 1) +
+  facet_grid( . ~ Breed ) +
+  labs(x = 'Dog Age (years)', y = 'Count of Dogs') +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold")) +
+  ggtitle('Dog Breed Age Comparisons') 
+
+DogRating1A <- ggplot(GoodDogs, aes(x = Breed, y = Rating, fill = Breed)) +
+  geom_boxplot(notch = FALSE) +
+  labs(x = 'Dog Breed', y = 'Goodness Rating') +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"), legend.title = element_blank(), legend.position = "none") +
+  ggtitle('Dog Breed Goodness Ratings')
+
+ggarrange(DogAgeBreed1A, 
+          ggarrange(DogRating1A, ncol = 1), 
+          nrow = 2, common.legend = TRUE, legend = "bottom") 
+```
+
+## Exercise 1B: 
 
 
 
@@ -423,7 +491,7 @@ Furthermore, ggnet2 is just ONE package we can use to visualize networks. Other 
 
 
 
-#(Paige) Exercise 3: Introduction to phylogenies
+# Exercise 3: Introduction to phylogenies
 
 # Resources
 
