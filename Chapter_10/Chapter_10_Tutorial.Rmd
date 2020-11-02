@@ -561,7 +561,64 @@ Furthermore, ggnet2 is just ONE package we can use to visualize networks. Other 
 
 
 
-# Exercise 3: Introduction to phylogenies
+# Exercise 3: Visualizing phylogenetic trees in R
+
+## What is a phylogeny? 
+A phylogenetic tree is a diagram that represents evolutionary relationships among organisms. Phylogenetic trees are hypotheses, not definitive facts, based on collected information about a set of species, eg. morphology or DNA.
+
+##Formats used in this tutorial
+* FASTA: FASTA format is a text-based format for representing either nucleotide sequences or peptide sequences, in which base pairs or amino acids are represented using single-letter codes. A sequence in FASTA format begins with a single-line description, followed by lines of sequence data.
+* NEWICK: Newick format is a commonly used
+way of representing tree topologies as text. Put simply, monophyletic clades are surrounded
+by parentheses and sister clades are separated by commas. For example, a simple tree could
+be written as (((A,B),C),(D,E)). Newick format also contains information about branch
+lengths (after colons) and node names (after closed parentheses).
+
+
+### Creating trees from DNA seqs using the package ape
+```{r ape_tree, include=TRUE}
+#set your working directory to the "phylogenies" directory 
+#setwd("~/EEB_Program/Courses/Reproducible_Science/Chapter_10/phylogenies")
+
+#install the package ape if you have not already 
+#install.packages("ape")
+library(ape)
+
+#read the aligned DNA sequences which are in FASTA format
+dna <- read.dna(file = "~/EEB_Program/Courses/Reproducible_Science/Chapter_10/phylogenies/vanilla_seqs_specs.fasta", format = "fasta")
+
+#calculate pairwise genetic distances
+#What is the defaultevolutionary model used to calcualte distances?
+D <- dist.dna(dna)
+
+#make a neighbor joining tree
+#What class is this tree?
+tree <- nj(D)
+class(tree)
+
+#plot the tree
+plot(tree, cex = 0.6, main = "Unrooted NJ Tree")
+```
+
+```{r rooted tree, include = TRUE}
+#make a rooted tree
+tree2 <- root(tree, outgroup = "MK201723.1 Vanilla mexicana")
+plot(tree2, main = "Rooted NJ Tree", cex = .7)
+```
+
+### Reading Newick files and visualizing trees
+```{r newick files, include = TRUE, results = hide}
+#use the read.tree function to open newick files. Check out their structure and class. 
+tree <- read.tree("~/EEB_Program/Courses/Reproducible_Science/Chapter_10/phylogenies/Theobroma_tree.nwk")
+str(tree)
+class(tree)
+
+#check out the arguments that can be used to plot trees
+?plot.phylo()
+
+#plot the tree and play around with different arguments
+plot(tree,no.margin=TRUE,edge.width=2)
+```
 
 # Resources
 
