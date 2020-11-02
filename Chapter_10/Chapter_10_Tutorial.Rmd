@@ -21,8 +21,13 @@ knitr::opts_chunk$set(echo = TRUE)
 #everyone can add in the packages that they will need. 
 library(ape)
 library(datasets) #to access base datasets - there's a lot to choose from in here!
-library(ggplot2) #to do some fancier plotting
 library(readr) #to load other data files (e.g., .csv)
+library(ggplot2) #to do some fancier plotting
+library(ggplotgui) #to access a shiny app for ggplots
+library(GGally)
+library(network)
+library(sna)
+library(RColorBrewer)
 
 
 #Generate BibTex citation file for all R packages used to produce report
@@ -83,23 +88,79 @@ plot(GoodDogs$Fetch_Distance, GoodDogs$Fetch_Time,
 ```
 
 ## Using ggplot2
-Most of the time
-```{r}
+### What is ggplot2?
+'ggplot2' allows for additional flexibility and customization of our figures. Using the "grammar of graphics", 
+'ggplot2' is able to build every graph from the same base components:
+- a data set (e.g., your data)
+- a set of geoms (e.g., the points representing your data + how you want them to look)
+- a coordinate system (e.g., defining where the data points are)
 
+The grammar for this package can feel a little unwieldy at first, so keeping this cheatsheet [link] (https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf) handy might be helpful!
 
+### Example 1: Revisting Our GoodDogs Data
+Let's start to get to know ggplot better by revisiting our fetch data. First, we need to specify our data using ggplot(). Next, we specify that we want a scatterplot using geom_point().
+```{r GoodDogs fetch ggplot}
+#make a basic scatterplot
+ggplot(GoodDogs, aes(x=GoodDogs$Fetch_Distance, y=GoodDogs$Fetch_Time)) +
+  geom_point() 
 ```
 
-### Customization with ggplot2
-- Customization
-  - Titles and Legend Styling
-  - Box plots and histograms example
-  - Additional Options
-    - Arranging multiple plots
-    - Colors
-    
-## Exercise 1: Producing a figure like this
+Now let's make our figure look a little bit nicer by cleaning up our axis labels. 
+```{r GoodDogs fetch ggplot2}
+#add axis labels and a title
+ggplot(GoodDogs, aes(x=GoodDogs$Fetch_Distance, y=GoodDogs$Fetch_Time)) +
+  geom_point() +
+  xlab("Distance Ball is Thrown (ft)") + #rename the x axis label
+  ylab("Fetch Time (s)") + #rename the y axis label
+  ggtitle("Throw Distance vs Time while Playing Fetch") + #add a plot title
+  theme(plot.title = element_text(hjust = 0.5))  #this centers our title
+```
 
-## Exercise 2: Producing and arranging two figures like this
+We also might want to know some more about our data, like which points are associated with the different dog breeds in our dataset. This will use our same code from above, but a color argument to the aes argument of ggplot.
+```{r GoodDogs fetch and breed ggplot}
+#add color based on dog breed
+ggplot(GoodDogs, aes(x=GoodDogs$Fetch_Distance, y=GoodDogs$Fetch_Time, color=GoodDogs$Breed))+   
+  geom_point() +
+  xlab("Distance Ball is Thrown (ft)") + 
+  ylab("Fetch Time (s)") + 
+  ggtitle("Throw Distance vs Time while Playing Fetch") + 
+  theme(plot.title = element_text(hjust = 0.5)) 
+```
+
+Finally, let's refine our legend and title styling a bit more. We can also streamline our labels code using the labs function. Let's also change our plot theme to remove the gridlines and gray background.
+```{r GoodDogs pretty fetch and breed ggplot}
+ggplot(GoodDogs, aes(x=GoodDogs$Fetch_Distance, y=GoodDogs$Fetch_Time, color=GoodDogs$Breed))+   
+  geom_point() +
+  labs(color = "Dog Breeds", x="Distance Ball is Thrown (ft)", y="Fetch Time (s)") + #combine our label functions and add in an argument for the legend title
+  ggtitle("Throw Distance vs Time while Playing Fetch") + 
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"), legend.title = element_text(face = "bold"), legend.title.align = 0.5, panel.background = element_blank(), panel.border = element_blank(), panel.grid.major = element_blank(),
+panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) #specify that the title should be in bold (face), format the legend title (legend.title and legend.title.align), and change the background color and gridlines (panel arguments)
+```
+
+### Example 2: Additional Customization Using ggplot2
+Now that we are feeling more comfortable with ggplot's grammar, let's explore some additional customization options using 'ggplot2'. 
+
+Let's start by exploring our GoodDogs data using a point and click shiny app available through the 'ggplotgui' package. This is a really nice tool for getting familiar with the 'ggplot2' grammar and for very quickly visualizing our data. We will use this to create a very simple histogram to see the age distribution of the dogs in our dataset.
+```{r Shiny app for ggplot visualization}
+ggplotgui::ggplot_shiny(GoodDogs) #this opens a shiny app to point and click make a ggplot
+```
+
+We can copy the code that the ggplot GUI app uses to produce this histogram as a shortcut. Because the app is limited in features, we will work on customizing the histogram more next.
+```{r Code from GUI}
+#copied from the ggplot GUI app, changed df to GoodDogs and saved as object 
+DogAge <- ggplot(GoodDogs, aes(x = Age)) +
+  geom_histogram(position = 'identity', alpha = 0.83, binwidth = 1) +
+  labs(x = 'Age', y = 'Count') +
+  ggtitle('Dog Ages') +
+  theme_classic()
+DogAge
+```
+
+
+    
+## Exercise 1A: Producing a figure like this
+
+## Exercise 1B: Producing and arranging two figures like this
 
 
 
@@ -119,16 +180,6 @@ In network analyses, "nodes" designate the vertices of a network whereas "edges"
 ## Visualizing a network diagram in R using ggnet2
 
 To continue  our understanding of ggplot2, we will be using the ggnet2 function, which offers a larger range of network visualization in a single function call. ggnet2 plots network objects as ggplot2 objects that can be styled using ggplot2 scales and themes. While the ggnet2 function uses a syntax that may be familiar to those who have worked with ggplot2, it is also designed to be easily understood by users who may not be familiar with ggplot2 obkects. Thus, while ggnet2 applies the "grammar of graphics" to  network objects, the funciton itself works very much like the plotting functions of the igraph and/or network packages in that a long series of arguments is used to control p[retty much every aspect of the network visualization. ggnet2 is available through the GGally package.
-
-```{r packages, echo=FALSE, warning=FALSE, include=FALSE}
-#install packages and dependencies
-install.packages("GGally")
-library(GGally)
-library(network)
-library(sna)
-library(ggplot2)
-library(RColorBrewer)
-```
 
 ## Let's create a basic network!
 
