@@ -72,7 +72,7 @@ plot(pressure)
 ```
 
 Let's try this again with some very unscientific fake data on different dogs' fetch abilities and "goodness" ratings. For now, we will focus on their fetch abilities. Let's start by loading the data file and checking it out.
-```{r GoodDogs data}
+```{r GoodDogs data, warning=FALSE, message=FALSE}
 #load and view data
 GoodDogs <- read_csv("GoodDogs.csv")
 View(GoodDogs)
@@ -180,7 +180,7 @@ DogRating
 
 Before we get to our first Exercise to start practicing making and arranging ggplots, let's first go over how to arrange multiple ggplots on a page. We can use the plots we just made as an example. Faceting, like we see in the DogAgeBreed plot, is one way to achieve this. &nbsp;
 
-**Method 1:** 'gridExtra' package and grid.arrange() function
+**Method 1:** 'gridExtra' package and grid.arrange() function &nbsp;
 The grid.arrange() function of the 'gridExtra' package is another easy option for arranging multiple plots. We have already saved our ggplots as objects, which is the first step in arranging them.
 ```{r Arrange Dog Plots}
 grid.arrange(DogAgeBreed, DogRating, nrow=1) #nrow=1 is specifying we want them in a single row
@@ -197,7 +197,7 @@ You can also arrange the plots by specifying columns. Let's add in our DogAge hi
 grid.arrange(DogAge, DogAgeBreed, DogRating, nrow=2, ncol=2) 
 ```
 
-**Method 2:** 'grid' package 
+**Method 2:** 'grid' package &nbsp;
 The 'grid' package also allows for arranging plots and can be useful for more complicated arrangements. This can help use span over multiple columns or rows. Let's see an example here.
 ```{r Arrange with Grid}
 # Move to a new page
@@ -263,8 +263,8 @@ Our end result is by no means complete, but will give you some practice for maki
     + A jittered violin plot of Petal.Length by species
 2. Create an "all.sepals" ggplot object where x = "Sepal.Length", y = "Sepal.Width"
 3. Use the "all.sepals" object to create a scatter and 2D density plot.
-4. Use the minimal theme for all plots
-5. Arrange the plots from steps 1-3 in 3 rows and with a shared legend for iris species.
+4. Use the minimal theme for all plots.
+5. Arrange the plots from steps 1-3 in 3 rows and with a common legend for iris species. Try specifying column widths to help with crowding in the resulting arrangement.
 
 ```{r Solution1B, echo=FALSE, eval=FALSE}
 #refresh on the variables in the iris dataset
