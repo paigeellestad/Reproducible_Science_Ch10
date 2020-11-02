@@ -83,7 +83,7 @@ plot(GoodDogs$Fetch_Distance, GoodDogs$Fetch_Time,
 ```
 
 ## Using ggplot2
-Most of the time
+'ggplot2' allows for additional flexibility and customization of our figures. 
 ```{r}
 
 
@@ -97,9 +97,9 @@ Most of the time
     - Arranging multiple plots
     - Colors
     
-## Exercise 1: Producing a figure like this
+## Exercise 1A: Producing a figure like this
 
-## Exercise 2: Producing and arranging two figures like this
+## Exercise 1B: Producing and arranging two figures like this
 
 
 
