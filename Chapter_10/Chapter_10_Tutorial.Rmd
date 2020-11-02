@@ -252,7 +252,55 @@ We will use the iris dataset that we first saw in the Chapter 8 tutorial to work
 knitr::include_graphics("solution1B.png")
 ```
 **Steps:**
-1. 
+1. Create the following plots using the iris dataset and 'ggplot2' (challenge: use the 'ggpubr' package to create the plots - see link below):
+    + A box plot of the Sepal.Width data
+    + A faceted scatter plot with trend lines of y = “Petal.Length” by x = “Petal.Width"
+    + A jittered violin plot of Petal.Length by species
+2. Create an "all.sepals" ggplot object where x = "Sepal.Length", y = "Sepal.Width"
+3. Use the "all.sepals" object to create a scatter and 2D density plot.
+4. Use the minimal theme for all plots
+5. Arrange the plots from steps 1-3 in 3 rows and with a shared legend for iris species.
+
+```{r Solution1B, echo=FALSE, eval=FALSE}
+#refresh on the variables in the iris dataset
+summary(iris)
+
+#box plot for sepal.width
+SepalBox <- ggplot(iris) + 
+  geom_boxplot(aes(x = Species, y = Sepal.Width, color = Species)) +
+  theme_minimal()
+
+#scatter plots with trend lines and faceting
+PetalScatter <- ggplot(data=iris,aes(x=Petal.Width, y=Petal.Length,color=Species)) +
+  geom_point() +
+  geom_smooth(se=FALSE) +
+  facet_wrap(~Species,scale='free_y') +
+  theme_minimal()
+
+#layered violin plot (violin + jitter)
+p <- ggplot(iris, mapping = aes(x = Species, y = Sepal.Width, color = Species))
+violin.layer <- geom_violin() 
+jitter.layer <- geom_jitter(width=0.15, height=0.05, alpha=0.5, size=0.75) 
+
+PetalViolin <- p + violin.layer + jitter.layer + theme_minimal() #combine layers of plot
+
+#create an all.sepals object
+all.sepals <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width))
+
+#use the all.sepals object to create a scatter plot and density plot
+SepalScatter <- all.sepals + 
+  geom_point(aes(color = Species, shape = Species), size = 2, alpha = 0.6) +
+  theme_minimal()
+
+SepalDensity <- all.sepals + 
+  geom_density_2d(aes(color = Species), alpha = 0.5) + 
+  geom_point(aes(color = Species), alpha=0.5, size=1) + 
+  facet_wrap(~ Species) +
+  theme_minimal()
+
+#arrange plots with a common legend
+ggarrange(PetalScatter, PetalViolin, SepalScatter, SepalBox, SepalDensity, ncol=2, nrow=3, widths = c(1, .75), common.legend = TRUE, legend="bottom")
+```
 
 
 ## Challenge/Next Steps
