@@ -48,7 +48,7 @@ knitr::write_bib(.packages(), file = 'packages.bib')
 knitr::include_graphics("random_photo.jpg")
 ```
 
-#(Haley) Making Figures with Default Graphics and ggplot2
+# (Haley) Making Figures with Default Graphics and ggplot2
 
 ## Chunk Options for Figures
 Gandrud outlines several useful chunk options for figures in R Markdown documents:
