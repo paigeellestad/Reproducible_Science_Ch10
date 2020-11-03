@@ -705,13 +705,22 @@ plot(tree,no.margin=TRUE,edge.width=2)
 
 # Resources
 
-- Chapter 10 of Gandrund(2015)
+- Chapter 10 of Gandrund (2015)
 - Chapter 1 of Wickham and Grolemund (2017)
 - Chapter 22 of Guangchuang et al. (2017)
 - ggplot2 and Beyond Tutorials
   - https://bio304-class.github.io/bio304-book/introduction-to-ggplot2.html
   - http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/#mix-table-text-and-ggplot
-  
+- Network visualization with R
+  - http://www.kateto.net/wp-content/uploads/2019/06/Sunbelt%202019%20R%20Network%20Visualization%20Workshop.pdf 
+  - https://journal.r-project.org/archive/2017/RJ-2017-023/RJ-2017-023.pdf 
+- ggnet2 Tutorial
+  - https://briatte.github.io/ggnet/ 
+  - https://exts.ggplot2.tidyverse.org/ggnetwork.html 
+- Network studies
+  - Community detection in networks (Girvan and Newman, 2002)
+  - Node failure in interdependent networks (Buldyrev et al., 2010)
+  - Neural network of C. elegans (watts and Strogatz, 1998)
 
 # References
 
