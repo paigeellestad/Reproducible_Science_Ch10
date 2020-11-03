@@ -4,8 +4,9 @@ author: "Paige Ellestad, Molly Levy, Haley Netherton-Morrison"
 date: "`r Sys.Date()`"
 output:
   html_document:
-    toc: yes
-    df_print: paged
+    toc: TRUE
+    toc_float: TRUE
+    number_sections: TRUE
   pdf_document:
     toc: yes
 urlcolor: blue
@@ -15,23 +16,6 @@ fontsize: 12pt
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
-
-```{r packages, echo=FALSE, warning=FALSE, include=FALSE}
-#you will need to have all of these packages installed and loaded to complete this tutorial 
-library(knitr) #knitting tools
-library(datasets) #to access base datasets - there's a lot to choose from in here!
-library(readr) #to load other data files (e.g., .csv)
-library(ggplot2) #to do some fancier plotting
-library(ggplotgui) #to access a shiny app for ggplots
-library(gridExtra) #to arrange multiple plots on a page
-library(grid) #another way to arrange multiple plots
-library(ggpubr) #great package for making publication ready plots
-library(GGally) #contains the ggnet2 function we will use to make networks
-library(network) #tools to create and modify network objects
-library(sna) #more tools for network analysis 
-library(RColorBrewer) #provides color schemes for figures
-library(ape)
 
 #Generate BibTex citation file for all R packages used to produce report
 knitr::write_bib(.packages(), file = 'packages.bib')
@@ -58,7 +42,34 @@ The files to support this tutorial are deposited in the shared Google Drive at t
   
   + `Reproducible_Science/Bioinformatic_tutorials/Chapter_10`
 
-In addition to the data files stored in this path, this tutorial will also use the *pressure* and *iris* datasets available through R's 'datasets' package. All packages needed to successfully complete this tutorial are listed in the "packages" code chunk in the .Rmd file. 
+In addition to the data files stored in this path, this tutorial will also use the *pressure* and *iris* datasets available through R's 'datasets' package. 
+
+To get started, you will need to install the following packages:
+```{r install packages, eval = FALSE, warning=FALSE}
+#install packages - these are the ones you may not already have installed
+install.package(c("ggplotgui", "gridExtra", "grid", "ggpubr","GGally", "network", "sna", "ape", "devtools", "ggtree", "tidyverse"))
+```
+
+You will also need to make sure these packages are installed and loaded to successfully complete the tutorial:
+```{r load packages, eval=FALSE}
+#load packages
+library(knitr) #knitting tools
+library(datasets) #to access base datasets - there's a lot to choose from in here!
+library(readr) #to load other data files (e.g., .csv)
+library(ggplot2) #to do some fancier plotting
+library(ggplotgui) #to access a shiny app for ggplots
+library(gridExtra) #to arrange multiple plots on a page
+library(grid) #another way to arrange multiple plots
+library(ggpubr) #great package for making publication ready plots
+library(GGally) #contains the ggnet2 function we will use to make networks
+library(network) #tools to create and modify network objects
+library(sna) #more tools for network analysis 
+library(RColorBrewer) #provides color schemes for figures
+library(ape) #tool for phylogenetic trees from DNA seq data
+library(devtools) #developer tools (e.g., downloading packages from other places)
+library(tidyverse) #loads core tidyverse packages (e.g., ggplot2, dplyr, tidyr, tibble, etc.)
+library(ggtree) #more phylogenetic tree tools
+```
 
 # Making Figures with Default Graphics and ggplot2
 This section will address different ways to make figures in R. Specifically, we will cover:
@@ -362,18 +373,19 @@ This section will address different ways to modify network visualizations in R u
 At its core, a network is simply a set of vertices connected by a set of edges. There are many kinds of networks, and network analyses can be used across disciplines. For instance, networks of scientific collaboration, a food web of marine animals, and American college football games are all covered in a paper on community detection in networks by Girvan and Newman (2002). Additionally, Buldyrev et al. (2010) study node failure in interdependent networks like power grids. Social networks such as links between television and film actors found on http://www.imdb.com/ and neural networks, like the completely mapped neural network of the C. elegans worm are also extensively studied (Watts and Strogatz, 1998).
 
 ## Network terminology
+In network analyses, "nodes" designate the vertices of a network whereas "edges" indicate the ties between nodes. The edges in networks can be *directed*, indicating an ordering of vertices (wherein switching the direction of hte edge would change the structure of the network), or the edges can be *undirected*, meaning the edges are simply connections between vertices where order does not matter. 
+ 
+*  The **World Wide Web**  is an example of *directed* edges: hyperlinks connect one Web page to another, but not necessarily the other way around!
+* **Co-authorship networks** are eamples of *undirected* networks, wherein nodes are authors and are connected by an edge if they have written a publication together (direction does not matter!)
 
-In network analyses, "nodes" designate the vertices of a network whereas "edges" indicate the ties between nodes. The edges in networks can be *directed*, indicating an ordering of vertices (wherein switching the direction of the edge would change the structure of the network), or the edges can be *undirected*, meaning the edges are simply connections between vertices where order does not matter. 
--  The **World Wide Web**  is an example of *directed* edges: hyperlinks connect one Web page to another, but not necessraily the other way around!
-- **Co-authorship networks** are eamples of *undirected* networks, wherein nodes are authors and are connected by an edge if they have written a publication together (direction does not matter!)
 
 ## Visualizing a network diagram in R using ggnet2
 
-To continue  our understanding of 'ggplot2', we will be using the **ggnet2**' function, which offers a larger range of network visualization in a single function call. ggnet2 plots network objects as 'ggplot2' objects that can be styled using 'ggplot2' scales and themes. While the ggnet2 function uses a syntax that may be familiar to those who have worked with 'ggplot2', it is also designed to be easily understood by users who may not be as familiar with 'ggplot2' objects. Thus, while ggnet2 applies the "grammar of graphics" to  network objects, the function itself works very much like the plotting functions of the 'igraph' and/or 'network' packages, in that a long series of arguments is used to control pretty much every aspect of the network visualization. **ggnet2** is available through the 'GGally' package.
+To continue  our understanding of 'ggplot2', we will be using the **ggnet2** function, which offers a larger range of network visualization in a single function call. ggnet2 plots network objects as 'ggplot2' objects that can be styled using 'ggplot2' scales and themes. While the ggnet2 function uses a syntax that may be familiar to those who have worked with 'ggplot2', it is also designed to be easily understood by users who may not be as familiar with 'ggplot2' objects. Thus, while ggnet2 applies the "grammar of graphics" to  network objects, the function itself works very much like the plotting functions of the 'igraph' and/or 'network' packages, in that a long series of arguments is used to control pretty much every aspect of the network visualization. **ggnet2** is available through the 'GGally' package.
 
 You may already have these packages loaded from Session 1, but as a reminder these are the packages we will need for this section of the tutorial: 
 
-```{r packages2, echo=FALSE, warning=FALSE, include=FALSE}
+```{r packages2, eval = FALSE, echo=FALSE, warning=FALSE, include=FALSE}
 #install packages and dependencies
 install.packages("GGally")
 library(GGally)
@@ -689,23 +701,87 @@ tree2 <- root(tree, outgroup = "MK201723.1 Vanilla mexicana")
 plot(tree2, main = "Rooted NJ Tree", cex = .7)
 ```
 
-### Reading Newick files and visualizing trees
+### Reading Newick files and visualizing more trees
 ```{r newick files, include = TRUE, results = 'hide'}
-#use the read.tree function to open newick files. Check out their structure and class. 
+#use the read.tree function to open newick files 
 tree <- read.tree("Theobroma_tree.nwk")
+```
+
+
+```{r newick_info, results='hide', include = TRUE}
+#look at the structure and class
 str(tree)
 class(tree)
 
 #check out the arguments that can be used to plot trees
 ?plot.phylo()
+```
 
-#plot the tree and play around with different arguments
-plot(tree,no.margin=TRUE,edge.width=2)
+Plot the tree using different arguments.
+```{r plotting trees, include = TRUE }
+# Example 1- plotting a phylogram
+plot(tree, no.margin=TRUE, cex = .6 ,edge.width=2)
+
+#Example 2- plotting a cladogram
+plot(tree, type = "c")
+
+#Example 3- plotting an unrooted tree
+plot(tree, type = "u")
+```
+
+The trees in examples 1 and 2 look good. Example 3 does not look good. Using the arguments in plot.phylo(), how could this be improved?
+
+### Using ggtree to plot phylogenetic trees
+ggtree is an R package that extends ggplot2 for visualizating and annotating phylogenetic trees with their covariates and other associated data. It is available from Bioconductor. Bioconductor is a project to provide tools for analyzing and annotating various kinds of genomic data. 
+
+You can also download the package from github.
+
+```{r ggtree, include=TRUE}
+devtools::install_github("YuLab-SMU/ggtree")
+library(tidyverse)
+library(ggtree)
+```
+
+Make a basic tree with ggtree.
+```{r vanilla_tree, include=TRUE}
+tree <- read.tree("vanilla.nwk")
+ggtree(tree)
+```
+
+Add a scale.
+```{r vanilla tree scale, include=TRUE}
+# add a scale
+ggtree(tree) + geom_treescale()
+
+# or add the entire scale to the x axis with theme_tree2()
+ggtree(tree) + theme_tree2()
+```
+
+Remove branch lengths from the tree.
+```{r vanilla tree remove branch lengths, include = TRUE}
+ggtree(tree, branch.length="none")
+
+ggtree(tree, branch.length="none", color="blue", size=2, linetype=3)#
+```
+
+```{r vanilla tree plot, include = TRUE}
+# create the basic plot
+p <- ggtree(tree)
+
+# add node points, tip points, tip labels, 
+p + geom_nodepoint() +
+   theme_tree2() +
+  xlim(0,.02) +
+  theme_tree()+
+  geom_tiplab()+
+  geom_cladelabel(node = 11, label = "A clade", offset = .005, align = TRUE, color = "red") + 
+  geom_cladelabel(node = 20, label = "Another clade", offset = .0045, align = TRUE, color = "blue") 
+ 
 ```
 
 # Resources
 
-- Chapter 10 of Gandrund (2015)
+- Chapter 10 of Gandrud (2015)
 - Chapter 1 of Wickham and Grolemund (2017)
 - Chapter 22 of Guangchuang et al. (2017)
 - ggplot2 and Beyond Tutorials
