@@ -51,7 +51,7 @@ install.package(c("ggplotgui", "gridExtra", "grid", "ggpubr","GGally", "network"
 ```
 
 You will also need to make sure these packages are installed and loaded to successfully complete the tutorial:
-```{r load packages}
+```{r load packages, message=FALSE, warning=FALSE}
 #load packages
 library(knitr) #knitting tools
 library(datasets) #to access base datasets - there's a lot to choose from in here!
