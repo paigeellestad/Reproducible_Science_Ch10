@@ -4,8 +4,9 @@ author: "Paige Ellestad, Molly Levy, Haley Netherton-Morrison"
 date: "`r Sys.Date()`"
 output:
   html_document:
-    toc: yes
-    df_print: paged
+    toc: TRUE
+    toc_float: TRUE
+    number_sections: TRUE
   pdf_document:
     toc: yes
 urlcolor: blue
@@ -15,6 +16,9 @@ fontsize: 12pt
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+#Generate BibTex citation file for all R packages used to produce report
+knitr::write_bib(.packages(), file = 'packages.bib')
 ```
 
 # Introduction
@@ -38,9 +42,17 @@ The files to support this tutorial are deposited in the shared Google Drive at t
   
   + `Reproducible_Science/Bioinformatic_tutorials/Chapter_10`
 
-In addition to the data files stored in this path, this tutorial will also use the *pressure* and *iris* datasets available through R's 'datasets' package. All packages needed to successfully complete this tutorial are listed in the "packages" code chunk in the .Rmd file. 
-```{r packages, echo=FALSE, warning=FALSE, include=FALSE}
-#you will need to have all of these packages installed and loaded to complete this tutorial 
+In addition to the data files stored in this path, this tutorial will also use the *pressure* and *iris* datasets available through R's 'datasets' package. 
+
+To get started, you will need to install the following packages:
+```{r install packages, eval = FALSE, warning=FALSE}
+#install packages - these are the ones you may not already have installed
+install.package(c("ggplotgui", "gridExtra", "grid", "ggpubr","GGally", "network", "sna", "ape", "devtools", "ggtree", "tidyverse"))
+```
+
+You will also need to make sure these packages are installed and loaded to successfully complete the tutorial:
+```{r load packages, eval=FALSE}
+#load packages
 library(knitr) #knitting tools
 library(datasets) #to access base datasets - there's a lot to choose from in here!
 library(readr) #to load other data files (e.g., .csv)
@@ -57,9 +69,6 @@ library(ape) #tool for phylogenetic trees from DNA seq data
 library(devtools) #developer tools (e.g., downloading packages from other places)
 library(tidyverse) #loads core tidyverse packages (e.g., ggplot2, dplyr, tidyr, tibble, etc.)
 library(ggtree) #more phylogenetic tree tools
-
-#Generate BibTex citation file for all R packages used to produce report
-knitr::write_bib(.packages(), file = 'packages.bib')
 ```
 
 # Making Figures with Default Graphics and ggplot2
