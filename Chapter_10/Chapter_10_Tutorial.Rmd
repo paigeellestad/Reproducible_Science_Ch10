@@ -672,9 +672,6 @@ A phylogenetic tree is a diagram that represents evolutionary relationships amon
 
 ### Creating trees from DNA seqs using the package ape
 ```{r ape_tree, include=TRUE}
-#set your working directory to the "phylogenies" directory 
-#setwd("~/EEB_Program/Courses/Reproducible_Science/Chapter_10/phylogenies")
-
 #install the package ape if you have not already 
 #install.packages("ape")
 library(ape)
