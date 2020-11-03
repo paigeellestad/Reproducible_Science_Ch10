@@ -354,10 +354,10 @@ At its core, a network is simply a set of vertices connected by a set of edges. 
 Strogatz, 1998).
 
 ## Network terminology
+In network analyses, "nodes" designate the vertices of a network whereas "edges" indicate the ties between nodes. The edges in networks can be *directed*, indicating an ordering of vertices (wherein switching the direction of hte edge would change the structure of the network), or the edges can be *undirected*, meaning the edges are simply connections between vertices where order does not matter. 
 
-In network analyses, "nodes" designate the vertices of a network whereas "edges" indicate the ties between nodes. The edges in networks can be *directed*, indicating an ordering of vertices (wherein switching the direction of the edge would change the structure of the network), or the edges can be *undirected*, meaning the edges are simply connections between vertices where order does not matter. 
--  The **World Wide Web**  is an example of directed edges: hyperlinnks connect one Web page to another, but not necessraily the other way around!
-- **Co-authorship networks** are eamples of undirected networks, wherein nodes are authors and are connected by an edge if they have written a publication together (direction does not matter!)
+* The **World Wide Web**  is an example of directed edges: hyperlinnks connect one Web apge to another, but not necessraily the other way around!
+* **Co-authorship networks** are eamples of undirected networks, wherein nodes are authors and are connected by an edge if they have written a publication together (direction does not matter!)
 
 ## Visualizing a network diagram in R using ggnet2
 
